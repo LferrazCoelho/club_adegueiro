@@ -1,7 +1,8 @@
 import ClubV1 from "../screens/ClubV1";
 
 export async function getServerSideProps() {
-    const dataProduts = await fetch(`http://localhost:3000/api/sheets`)
+    // const dataProduts = await fetch(`http://localhost:3000/api/sheets`)
+    const dataProduts = await fetch(`https://club-adegueiro.vercel.app/api/sheets`)
     .then((res) => {
         if(res.ok) {
             return res.json();

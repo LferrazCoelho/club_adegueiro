@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 // import TagManager from 'react-gtm-module';
 
-function ClubV1({ gtm, listProduts, listColor, listCategory, pastaLogo, logo, numberZap, titlePage, colorHead, colorBody, colorBodyItem, colorBodyBar, colorTitle, colorText, colorButton, atacado }) {
+function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo, numberZap, titlePage, colorHead, colorBody, colorBodyItem, colorBodyBar, colorTitle, colorText, colorButton, atacado }) {
 
     const [dataProdut, setDataProdut] = useState(listProduts);
-    const [dataColor, setDbColor] = useState(listColor);
-    const [filterProdut, setFilterProdut] = useState("legging");
+    const [dataOperation, setDbOperation] = useState(listOperation);
+    const [filterProdut, setFilterProdut] = useState("cerveja");
+    const [infoBD, setInfoBD] = useState(dataOperation.dataSheetsOperation[0]);
 
     const [modalProdut, setModalProdut] = useState(false);
     const [modalCart, setModalCart] = useState(false);
@@ -254,7 +255,7 @@ function ClubV1({ gtm, listProduts, listColor, listCategory, pastaLogo, logo, nu
 
         setItemCart(newItems);
     };
-
+    
     function sendZap() {
         var headOrder = `Novo pedido Nº${Math.floor(Math.random() * 65536)} - ${nameOrder} \n`;
         var footerOrder = `\n ${nameOrder}, em alguns instantes montarei seu pedido!`;
@@ -291,6 +292,14 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                 className="object-cover w-2/5"
                                 src={`/imgs/${logo}.png`}
                             />
+                        </div>
+                        <div className="flex justify-center items-center">
+                            <p className="text-white pr-2">Loja está</p>
+                            {( infoBD.operation === "on" ) ? 
+                                <button className="bg-green-500 text-white px-2 py-1 rounded-lg">aberto</button>
+                                :  
+                                <button className="bg-red-500 text-white px-2 py-1 rounded"> fechada </button>
+                            }
                         </div>
                     </div>
                 </div>
@@ -334,17 +343,6 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                     </div>
                 </div>
 
-                <div className="flex md:justify-center px-4 py-4 overflow-x-auto" style={{ color: colorTitle }}>
-                    <div className="flex justify-center items-center flex-nowrap">
-                        {listCategory.map((item, key) =>
-                            <p key={key}
-                                className={`mx-2 text-sm${filterProdut === item.value && "text-base border border-white rounded-lg px-2 py-1"}`} onClick={() => setFilterProdut(item.value)}>
-                                {item.name}
-                            </p>
-                        )}
-                    </div>
-                </div>
-
                 <div className="flex overflow-x-auto md:justify-center py-4 px-2 lg:overflow-x-hidden">
                     <div className="flex flex-nowrap">
                         <p></p>
@@ -363,6 +361,17 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                     </p>
                                 </div>
                             </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="flex md:justify-center px-4 py-4 overflow-x-auto" style={{ color: colorTitle }}>
+                    <div className="flex justify-center items-center flex-nowrap">
+                        {listCategory.map((item, key) =>
+                            <p key={key}
+                                className={`mx-2 text-sm${filterProdut === item.value && "text-base border border-white rounded-lg px-2 py-1"}`} onClick={() => setFilterProdut(item.value)}>
+                                {item.name}
+                            </p>
                         )}
                     </div>
                 </div>
@@ -440,9 +449,9 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
 
                 {modalProdut && (
                     <div
-                        className="flex justify-center items-center inset-0 fixed"
+                        className="flex justify-center items-center inset-0 fixed bg-white"
                     >
-                        <div className="w-screen h-screen pt-8 md:pt-0 md:flex md:w-full bg-white relative overflow-y-auto md:overflow-hidden">
+                        <div className="w-screen h-screen pt-8 md:pt-0 md:flex md:w-full relative overflow-y-auto md:overflow-hidden">
                             {/* IMG Desktop */}
                             <div className="p-0 m-0 hidden md:block h-auto w-2/5">
                                 <img
@@ -451,29 +460,25 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                 />
                             </div>
                             {/* IMG Mobile */}
-                            <div className="p-0 m-0 md:hidden">
+                            <div className="flex justify-center items-center md:hidden bg-white">
                                 <img
-                                    className="h-80 md:h-auto w-full md:w-2/5 object-cover object-top"
+                                    className="h-80 md:h-auto h-full md:w-2/5 object-cover object-center"
                                     src={`/imgs/produts/${cardSelected.ref}.jpg`}
                                     onClick={() => openModalImgSelect()}
                                 />
                             </div>
                             <hr />
                             <div className="py-2 md:w-3/5 md:overflow-y-auto">
-                                <div className="px-4 mb-4 h-auto md:h-auto md:pt-8 md:px-8">
-                                    <div className="mb-1">
-                                        <h3 className="text-base text-gray-800 font-bold">
+                                <div className="px-4 mt-3 mb-4 h-auto md:h-auto md:pt-8 md:px-8">
+                                    <div className="flex items-center">
+                                        <h3 className="text-base font-bold">
                                             {cardSelected.produt}
                                         </h3>
-                                        <p className="text-sm">{cardSelected.size}</p>
                                     </div>
 
                                     <div className="mb-4 md:mb-8">
-                                        <p className="text-base font-bold">
-                                            
-                                            R$ {cardSelected.valueCx} a caixa com {cardSelected.quant}
-                                        </p>
-                                        <p className="text-base font-bold">
+                                        <p className="text-sm">Caixa com {cardSelected.quant} - {cardSelected.size}</p>
+                                        {/* <p className="text-base font-bold">
                                             
                                             R$ {cardSelected.valueUnd} a unidade
                                         </p>
@@ -481,8 +486,27 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                             <p className="text-sm font-medium text-green-500">
                                                 {cardSelected.valuepromo}% off para pagamento a vista
                                             </p>
-                                        }
+                                        } */}
                                     </div>
+
+                                    {/* <div className="md:hidden">
+                                        <div className="md:w-2/5 mb-2 border border-gray-100 rounded-md shadow">
+                                            <div
+                                                className={`flex justify-between items-center px-2 py-1 bg-gray-50`}
+                                                onClick={() => setDescriptOn(!descriptOn)}
+                                            >
+                                                   <p>Descrição</p>
+                                                <p>{descriptOn ?
+                                                        <img className="w-3 h-3" src={`/imgs/icons/icon-t.png`} />
+                                                    :
+                                                    <img className="w-3 h-3" src={`/imgs/icons/icon-b.png`} />
+                                                }</p>
+                                            </div>
+                                            <div className={`${descriptOn ? "block" : "hidden"} px-2 py-3`}>
+                                                <p>{cardSelected.descript}</p>
+                                            </div>
+                                        </div>
+                                    </div> */}
 
                                     <div className="flex-col justify-center items-center mb-2">
                                         {/* <div className="w-full md:w-2/5 mb-4">
@@ -500,12 +524,64 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                         </div> */}
 
                                         <div 
-                                            className={`
-                                                flex md:w-2/5 justify-center items-center mb-4
-                                                ${(alertInputSizeTextOn) ? "mb-4" : ""}
-                                                `}
+                                            className={`md:w-2/5 mb-4 ${(alertInputSizeTextOn) ? "mb-4" : "" }`}
                                         >
-                                            <div className="w-1/2 text-center mx-1">
+                                            <div className="flex justify-start items-center text-center mx-1">
+                                                <input
+                                                    className={`h-6 w-6 mr-2 ${alertInputSize}`}
+                                                    min="0"
+                                                    max="50"
+                                                    placeholder={sizeP}
+                                                    type="radio"
+                                                    id="sizeP"
+                                                    name="quantBeer"
+                                                    onChange={(event) => setSizeP(event.target.value)}
+                                                />
+                                                <div className="">
+                                                    <p className="text-base font-bold">
+                                                        Caixa por R$ {cardSelected.valueCx}
+                                                    </p>
+                                                </div>
+                                                {/* <input
+                                                    className={`w-2/5 px-2 ml-4 h-8 shadow rounded-md border bg-white border-gray-400 text-center ${alertInputSize} ${alertInputSize}`}
+                                                    min="0"
+                                                    max="50"
+                                                    placeholder={sizeP}
+                                                    type="number"
+                                                    id="sizeP"
+                                                    onChange={(event) => setSizeP(event.target.value)}
+                                                /> */}
+                                            </div>
+                                            <div className="flex justify-start items-center text-center mx-1 py-1 mt-2">
+                                                <input
+                                                    className={`h-6 w-6 mr-2 ${alertInputSize}`}
+                                                    min="0"
+                                                    max="50"
+                                                    placeholder={sizeP}
+                                                    type="radio"
+                                                    id="sizeP"
+                                                    name="quantBeer"
+                                                    onChange={(event) => setSizeP(event.target.value)}
+                                                />
+                                                <div className="">
+                                                    <p className="text-base font-bold">
+                                                        Unidade por R$ {cardSelected.valueUnd}
+                                                    </p>
+                                                </div>
+                                                {/* <input
+                                                    className={`w-2/5 px-2 ml-4 h-8 shadow rounded-md border bg-white border-gray-400 text-center ${alertInputSize} ${alertInputSize}`}
+                                                    min="0"
+                                                    max="50"
+                                                    placeholder={sizeP}
+                                                    type="number"
+                                                    id="sizeP"
+                                                    onChange={(event) => setSizeP(event.target.value)}
+                                                /> */}
+                                            </div>
+                                            {/* <div className="w-1/2 text-center mx-1">
+                                                <p className="text-base font-bold">
+                                                    R$ {cardSelected.valueCx}
+                                                </p>
                                                 <p>Quant de Caixas</p>
                                                 <input
                                                     className={`px-2 h-8 w-full shadow rounded-md border bg-white text-center ${alertInputSize}`}
@@ -519,6 +595,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                             </div>
                                             <div className="w-1/2 text-center mx-1">
                                                 <p>Quant de unidades</p>
+                                                <p>Quant de unidades</p>
                                                 <input
                                                     className={`px-2 h-8 w-full shadow rounded-md border bg-white text-center ${alertInputSize}`}
                                                     min="0"
@@ -528,13 +605,30 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                                     id="sizeM"
                                                     onChange={(event) => setSizeM(event.target.value)}
                                                 />
-                                            </div>
+                                            </div> */}
                                         </div>
                                         { alertInputSizeTextOn &&
                                                 <div className="w-full md:w-2/5 mb-4">
                                                     <p className="mx-1 text-sm text-center text-red-300">digite a quantidade que deseja</p>
                                                 </div>
                                         }
+                                        <div className="flex justify-center items-center py-2">
+                                            <button className="h-8 w-8 mx-2 rounded-full bg-white shadow-lg border border-gray-200">
+                                                <p className="text-gray-900 font-bold">-</p>
+                                            </button>
+                                            <input
+                                                className={`w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-200 ${alertInputSize}`}
+                                                min="0"
+                                                max="50"
+                                                placeholder={sizeM}
+                                                type="number"
+                                                id="sizeM"
+                                                onChange={(event) => setSizeM(event.target.value)}
+                                            />
+                                            <button className="h-8 w-8 mx-2 rounded-full shadow-lg border border-gray-200">
+                                                <p className="text-gray-900 font-bold">+</p>
+                                            </button>
+                                        </div>
                                         {/* descriçao e especificaçoes mobile */}
                                         {/* <div className="md:hidden">
                                             <div className="md:w-2/5 mb-2 border border-gray-100 rounded-md shadow">
@@ -621,31 +715,31 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                             className="w-full bg-green-600 px-2 py-2 rounded-md text-sm text-white mr-2"
                                             onClick={() => openModalAddCart()}
                                         >
-                                            Colocar carrinho
+                                            Adicionar carrinho
                                         </button>
                                         <button
                                             className="w-full bg-green-500 px-2 py-1 rounded-md text-sm text-white"
                                             onClick={() => AddCartAndSend()}
                                         >
-                                            Fazer pedido
+                                            Finalizar pedido
                                         </button>
                                     </div>
                                 </div>
 
                                 {/* CTA mobile */}
                                 <div className="md:hidden">
-                                    <div className="flex justify-center md:w-3/5 pt-4 pb-2 px-4 fixed inset-x-0 bottom-0 bg-white">
+                                    <div className="flex justify-center md:w-3/5 pt-4 pb-2 px-4 fixed inset-x-0 bottom-0">
                                         <button
-                                            className="w-full bg-green-600 px-2 py-2 rounded-md text-sm text-white mr-2"
+                                            className="w-full bg-green-600 px-2 py-3 rounded-md text-sm text-white mr-2"
                                             onClick={() => openModalAddCart()}
                                         >
-                                            Colocar carrinho
+                                            Adicionar carrinho
                                         </button>
                                         <button
-                                            className="w-full bg-green-500 px-2 py-1 rounded-md text-sm text-white"
+                                            className="w-full bg-green-500 px-2 py-3 rounded-md text-sm text-white"
                                             onClick={() => AddCartAndSend()}
                                         >
-                                            Fazer pedido
+                                            Finalizar pedido
                                         </button>
                                     </div>
                                 </div>

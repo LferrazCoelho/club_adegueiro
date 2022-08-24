@@ -1,8 +1,8 @@
 import ClubV1 from "../screens/ClubV1";
 
 export async function getServerSideProps() {
-    // const dataProduts = await fetch(`http://localhost:3000/api/sheets`)
-    const dataProduts = await fetch(`https://club-adegueiro.vercel.app/api/sheets`)
+    const dataProduts = await fetch(`http://localhost:3000/api/sheetsProduts`)
+    // const dataProduts = await fetch(`https://club-adegueiro.vercel.app/api/sheets`)
     .then((res) => {
         if(res.ok) {
             return res.json();
@@ -12,15 +12,16 @@ export async function getServerSideProps() {
         return res
     })
 
-    // const dataColor = await fetch(`http://localhost:3000/api/sheets-color-lievi`)
-    // .then((res) => {
-    //     if(res.ok) {
-    //         return res.json();
-    //     }
-    // })
-    // .then((res) => {
-    //     return res
-    // })
+    const dataOperation = await fetch(`http://localhost:3000/api/sheetsOperation`)
+    // const dataOperation = await fetch(`https://club-adegueiro.vercel.app/api/sheetsOperation`)
+    .then((res) => {
+        if(res.ok) {
+            return res.json();
+        }
+    })
+    .then((res) => {
+        return res
+    })
 
     const listCategory = [
         {value: "cerveja", name: "Cervejas"},
@@ -37,7 +38,7 @@ export async function getServerSideProps() {
         props: {
             gtm: "GTM-XXXXXXXX",
             listProduts: dataProduts.filterSheetProdut,
-            // listColor: dataColor.sheetColor,
+            listOperation: dataOperation,
             listCategory: listCategory,
             pastaLogo: "lievi",
             logo: "logo-mult",

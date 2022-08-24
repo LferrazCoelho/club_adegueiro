@@ -462,7 +462,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                             {/* IMG Mobile */}
                             <div className="flex justify-center items-center md:hidden bg-white">
                                 <img
-                                    className="h-80 md:h-auto h-full md:w-2/5 object-cover object-center"
+                                    className="h-64 md:h-auto h-full md:w-2/5 object-cover object-center"
                                     src={`/imgs/produts/${cardSelected.ref}.jpg`}
                                     onClick={() => openModalImgSelect()}
                                 />
@@ -471,13 +471,13 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                             <div className="py-2 md:w-3/5 md:overflow-y-auto">
                                 <div className="px-4 mt-3 mb-4 h-auto md:h-auto md:pt-8 md:px-8">
                                     <div className="flex items-center">
-                                        <h3 className="text-base font-bold">
+                                        <h3 className="text-lg font-bold">
                                             {cardSelected.produt}
                                         </h3>
                                     </div>
 
-                                    <div className="mb-4 md:mb-8">
-                                        <p className="text-sm">Caixa com {cardSelected.quant} - {cardSelected.size}</p>
+                                    <div className="mb-8 md:mb-8">
+                                        <p className="text-base">Caixa com {cardSelected.quant} - {cardSelected.size}</p>
                                         {/* <p className="text-base font-bold">
                                             
                                             R$ {cardSelected.valueUnd} a unidade
@@ -524,7 +524,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                         </div> */}
 
                                         <div 
-                                            className={`md:w-2/5 mb-4 ${(alertInputSizeTextOn) ? "mb-4" : "" }`}
+                                            className={`md:w-2/5 mb-6 ${(alertInputSizeTextOn) ? "mb-4" : "" }`}
                                         >
                                             <div className="flex justify-start items-center text-center mx-1">
                                                 <input

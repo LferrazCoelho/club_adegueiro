@@ -14,8 +14,8 @@ export default async function(req, res) {
     
     const sheetProduts = doc.sheetsByIndex[0];
     const rowsProduts = await sheetProduts.getRows();
-    const dataSheetsProduts = rowsProduts.map(({ ref, produt, size, quant, category, valueUnd, valueCx, promo, rank, status  }) => {
-        return { ref, produt, size, quant, category, valueUnd, valueCx, promo, rank, status };
+    const dataSheetsProduts = rowsProduts.map(({ ref, produt, type, size, quant, category, valueUnd, valueCx, promo, rank, status  }) => {
+        return { ref, produt, type, size, quant, category, valueUnd, valueCx, promo, rank, status };
     })
 
     const filterSheetProdut = dataSheetsProduts.filter(dataFilter => (dataFilter.status === "on"));

@@ -343,7 +343,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                     </div>
                 </div>
 
-                <div className="flex overflow-x-auto md:justify-center py-4 px-2 lg:overflow-x-hidden">
+                {/* <div className="flex overflow-x-auto md:justify-center py-4 px-2 lg:overflow-x-hidden">
                     <div className="flex flex-nowrap">
                         <p></p>
                         {dataProdut.map((item, key) =>
@@ -363,7 +363,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                             </div>
                         )}
                     </div>
-                </div>
+                </div> */}
 
                 <div className="flex md:justify-center px-4 py-4 overflow-x-auto" style={{ color: colorTitle }}>
                     <div className="flex justify-center items-center flex-nowrap">
@@ -377,7 +377,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                 </div>
 
                 <div className="">
-                    <div className="grid grid-cols-1 md:grid-cols-4 mt-5 gap-4 px-4 lg:px-20 xl:p-18">
+                    <div className="grid grid-cols-2 md:grid-cols-4 mt-5 gap-4 px-4 lg:px-20 xl:p-18">
                         {dataProdut.map((item, key) =>
                             item.category === filterProdut &&
                             <div className="shadow-md rounded-lg flex relative"
@@ -385,44 +385,44 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                 key={key}
                             >
                                 <div 
-                                    className="grid grid-cols-3 md:grid-cols-1"
+                                    className=" md:grid-cols-1"
                                     onClick={() => openModalProdut(item)}
                                 >
-                                    <div className="flex">
+                                    <div className="">
                                         <img
-                                            className="rounded-l-lg object-cover w-32 h-36 md:rounded md:w-full md:h-96"
-                                            src={`/imgs/produts/${item.ref}.jpg`}
+                                            className="rounded-t-lg object-cover object-center h-44 md:rounded md:w-full md:h-96"
+                                            src={`/imgs/produts/${item.ref}.png`}
                                             id="open-modal-img"
                                             onClick={() => openModalProdut(item)}
                                         />
                                     </div>
-                                    <div className="grid grid-cols-1 col-span-2 place-content-between p-4">
-                                        <div className="flex w-full"
+                                    <div className="p-2">
+                                        <div className="w-full"
                                             onClick={() => openModalProdut(item)}>
-                                            <h3 className="text-lg font-bold md:text-base"
-                                                style={{ color: colorTitle }}>{item.produt}</h3>
+                                            <h3 className="text-lg font-bold md:text-base text-yellow-500">
+                                                {item.produt}
+                                            </h3>
+                                            <p className="text-base text-yellow-500">
+                                                {item.type} - {item.size}
+                                            </p>
                                         </div>
                                         <div className="w-full">
-                                            <div className="flex justify-between items-center">
+                                            <div className="">
                                                 <p className="text-lg" style={{ color: colorTitle }}>
                                                     R$ {item.valueCx}
                                                 </p>
-                                                <p className="text-base" style={{ color: colorTitle }}>
+                                                {/* <p className="text-base" style={{ color: colorTitle }}>
                                                     com {item.quant}
-                                                </p>
-                                                {/* {moeda(item.value * 1)} */}
-                                                {/* {moeda(item.price * 1)} */}
+                                                </p> */}
                                             </div>
-                                            <div className="flex justify-between items-center">
+                                            {/* <div className="">
                                                 <p className="text-lg" style={{ color: colorTitle }}>
                                                 R$ {item.valueUnd}
                                                 </p>
                                                 <p className="text-base" style={{ color: colorTitle }}>
                                                     a und
                                                 </p>
-                                                {/* {moeda(item.value * 1)} */}
-                                                {/* {moeda(item.price * 1)} */}
-                                            </div>
+                                            </div> */}
                                             {/* <button
                                                 className="px-2 py-1 rounded-md text-sm text-white"
                                                 onClick={() => openModalProdut(item)}
@@ -456,14 +456,14 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                             <div className="p-0 m-0 hidden md:block h-auto w-2/5">
                                 <img
                                     className="h-full w-full object-cover object-top md:object-center"
-                                    src={`/imgs/produts/${cardSelected.ref}.jpg`}
+                                    src={`/imgs/produts/${cardSelected.ref}.png`}
                                 />
                             </div>
                             {/* IMG Mobile */}
                             <div className="flex justify-center items-center md:hidden bg-white">
                                 <img
-                                    className="h-64 md:h-auto h-full md:w-2/5 object-cover object-center"
-                                    src={`/imgs/produts/${cardSelected.ref}.jpg`}
+                                    className="h-64 md:h-auto md:w-2/5 object-cover object-center"
+                                    src={`/imgs/produts/${cardSelected.ref}.png`}
                                     onClick={() => openModalImgSelect()}
                                 />
                             </div>
@@ -524,7 +524,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                         </div> */}
 
                                         <div 
-                                            className={`md:w-2/5 mb-6 ${(alertInputSizeTextOn) ? "mb-4" : "" }`}
+                                            className={`md:w-2/5 mb-2 ${(alertInputSizeTextOn) ? "mb-4" : "" }`}
                                         >
                                             <div className="flex justify-start items-center text-center mx-1">
                                                 <input

@@ -1,8 +1,8 @@
 import ClubV1 from "../screens/ClubV1";
 
 export async function getServerSideProps() {
-    const dataProduts = await fetch(`http://localhost:3000/api/sheetsProduts`)
-    // const dataProduts = await fetch(`https://club-adegueiro.vercel.app/api/sheetsProduts`)
+    // const dataProduts = await fetch(`http://localhost:3000/api/sheetsProduts`)
+    const dataProduts = await fetch(`https://club-adegueiro.vercel.app/api/sheetsProduts`)
     .then((res) => {
         if(res.ok) {
             return res.json();
@@ -12,8 +12,8 @@ export async function getServerSideProps() {
         return res
     })
 
-    const dataOperation = await fetch(`http://localhost:3000/api/sheetsOperation`)
-    // const dataOperation = await fetch(`https://club-adegueiro.vercel.app/api/sheetsOperation`)
+    // const dataOperation = await fetch(`http://localhost:3000/api/sheetsOperation`)
+    const dataOperation = await fetch(`https://club-adegueiro.vercel.app/api/sheetsOperation`)
     .then((res) => {
         if(res.ok) {
             return res.json();

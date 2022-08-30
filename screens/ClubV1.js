@@ -396,8 +396,8 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                             onClick={() => openModalProdut(item)}
                                         />
                                     </div>
-                                    <div className="p-2">
-                                        <div className="w-full"
+                                    <div className="py-1">
+                                        <div className="w-full px-2 py-1"
                                             onClick={() => openModalProdut(item)}>
                                             <h3 className="text-lg font-bold md:text-base text-yellow-500">
                                                 {item.produt}
@@ -406,37 +406,46 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                                 {item.type} - {item.size}
                                             </p>
                                         </div>
-                                        <div className="w-full">
-                                            <div className="">
-                                                <p className="text-lg" style={{ color: colorTitle }}>
-                                                    R$ {item.valueCx}
-                                                </p>
-                                                {/* <p className="text-base" style={{ color: colorTitle }}>
-                                                    com {item.quant}
-                                                </p> */}
+                                        
+                                        { (item.category === "cerveja")? 
+                                            <div className="w-full flex items-center">
+                                                <div className="px-2 py-1 bg-green-700 rounded">
+                                                    <p className="text-base" style={{ color: colorTitle }}>
+                                                        R$ {item.valueCx}
+                                                    </p>
+                                                    <p className="text-sm" style={{ color: colorTitle }}>
+                                                        a caixa
+                                                    </p>
+                                                </div>
+                                                <div className="p-1 ml-1">
+                                                    <p className="text-base" style={{ color: colorTitle }}>
+                                                        R$ {item.valueUnd}
+                                                    </p>
+                                                    <p className="text-sm" style={{ color: colorTitle }}>
+                                                        a unidade
+                                                    </p>
+                                                </div>
                                             </div>
-                                            {/* <div className="">
-                                                <p className="text-lg" style={{ color: colorTitle }}>
-                                                R$ {item.valueUnd}
-                                                </p>
-                                                <p className="text-base" style={{ color: colorTitle }}>
-                                                    a und
-                                                </p>
-                                            </div> */}
-                                            {/* <button
-                                                className="px-2 py-1 rounded-md text-sm text-white"
-                                                onClick={() => openModalProdut(item)}
-                                                id="btn-cta-home"
-                                                style={{ backgroundColor: colorButton }}
-                                            >
-                                                ver produto
-                                            </button> */}
-                                        </div>
+                                            :
+                                            <div className="w-full">
+                                                <div className="px-2 pb-1">
+                                                    <p className="text-lg" style={{ color: colorTitle }}>
+                                                        R$ {item.valueUnd}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        }
+
                                     </div>
                                 </div>
                                 {item.promo === "on" &&
                                     <div className="absolute shadow right-2 -top-2 bg-green-500 px-2 rounded text-sm text-white">
                                         {item.valuepromo}% off
+                                    </div>
+                                }
+                                {item.rank === "on" &&
+                                    <div className="absolute shadow right-2 -top-2 bg-green-500 px-2 rounded text-sm text-white">
+                                        mais pedido
                                     </div>
                                 }
                             </div>
@@ -476,7 +485,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                         </h3>
                                     </div>
 
-                                    <div className="mb-8 md:mb-8">
+                                    <div className="mb-4 md:mb-8">
                                         <p className="text-base">Caixa com {cardSelected.quant} - {cardSelected.size}</p>
                                         {/* <p className="text-base font-bold">
                                             
@@ -526,6 +535,9 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                         <div 
                                             className={`md:w-2/5 mb-2 ${(alertInputSizeTextOn) ? "mb-4" : "" }`}
                                         >
+                                            <div>
+                                                <p>Quero pedir:</p>
+                                            </div>
                                             <div className="flex justify-start items-center text-center mx-1">
                                                 <input
                                                     className={`h-6 w-6 mr-2 ${alertInputSize}`}

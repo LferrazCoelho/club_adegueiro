@@ -44,7 +44,8 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo
     const [alertInputSize, setAlertInputSize] = useState("border-gray-100");
     const [alertInputSizeTextOn, setAlertInputSizeTextOn] = useState(false);
 
-    const countListCart = itemCart.length;
+    // const countListCart = itemCart.length;
+    const countListCart = 2;
 
     useEffect(() => {
         setIdColorSelect(cardSelected.capa);
@@ -286,20 +287,26 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
 
                 {/* Head Mobile */}
                 <div className="md:hidden">
-                    <div className="py-6 shadow-md" style={{ backgroundColor: colorHead }}>
-                        <div className="flex justify-center items-center">
+                    <div className="flex justify-center items-center py-6 shadow-md" style={{ backgroundColor: colorHead }}>
+                        <div className="flex justify-center items-center w-2/5">
                             <img
-                                className="object-cover w-2/5"
+                                className="object-cover h-32"
                                 src={`/imgs/${logo}.png`}
                             />
                         </div>
-                        <div className="flex justify-center items-center">
-                            <p className="text-white pr-2">Loja está</p>
-                            {( infoBD.operation === "on" ) ? 
-                                <button className="bg-green-500 text-white px-2 py-1 rounded-lg">aberto</button>
-                                :  
-                                <button className="bg-red-500 text-white px-2 py-1 rounded"> fechada </button>
-                            }
+                        <div className="w-3/5 p-1">
+                            <p className="text-yellow-500 text-base font-bold pb-1">Distribuidora de Bebidas</p>
+                            <p className="text-white text-sm">QE 15 Conjunto M, Bloco A</p>
+                            <p className="text-white text-sm pb-1">Guara 2</p>
+                            {/* <p className="text-yellow-500 text-base font-bold pb-1">Faça seu pedido</p> */}
+                            <div className="flex items-center">
+                                <p className="text-white pr-2">Loja está</p>
+                                {( infoBD.operation === "on" ) ? 
+                                    <button className="bg-green-500 text-white px-2 py-1 rounded-lg">aberto</button>
+                                    :  
+                                    <button className="bg-red-500 text-white px-2 py-1 rounded"> fechada </button>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -397,7 +404,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                         />
                                     </div>
                                     <div className="py-1">
-                                        <div className="w-full px-2 py-1"
+                                        <div className="w-full px-2 pb-2 pt-1"
                                             onClick={() => openModalProdut(item)}>
                                             <h3 className="text-lg font-bold md:text-base text-yellow-500">
                                                 {item.produt}
@@ -428,9 +435,12 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                             </div>
                                             :
                                             <div className="w-full">
-                                                <div className="px-2 pb-1">
-                                                    <p className="text-lg" style={{ color: colorTitle }}>
+                                                <div className="flex items-center px-2 pb-1">
+                                                    <p className="text-lg text-white">
                                                         R$ {item.valueUnd}
+                                                    </p>
+                                                    <p className="ml-1 text-base text-white">
+                                                        a und
                                                     </p>
                                                 </div>
                                             </div>
@@ -471,7 +481,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                             {/* IMG Mobile */}
                             <div className="flex justify-center items-center md:hidden bg-white">
                                 <img
-                                    className="h-64 md:h-auto md:w-2/5 object-cover object-center"
+                                    className="h-72 md:h-auto md:w-2/5 object-cover object-center"
                                     src={`/imgs/produts/${cardSelected.ref}.png`}
                                     onClick={() => openModalImgSelect()}
                                 />
@@ -1129,8 +1139,8 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                         </div>
                         <div
                             className="relative"
+                            >
                             onClick={() => openModalCart()}
-                        >
                             <img
                                 className="w-6 h-6"
                                 src={`/imgs/icons/icon-cart-white.png`}

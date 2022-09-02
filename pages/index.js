@@ -42,7 +42,7 @@ export async function getServerSideProps() {
             listCategory: listCategory,
             pastaLogo: "lievi",
             logo: "logo-mult",
-            titlePage: "LIEVI Fitness",
+            titlePage: "Adegueiro Entregas",
             numberZap: 5532998306328,
             atacado: true,
             colorHead: "#292626",

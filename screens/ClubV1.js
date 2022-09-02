@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 // import TagManager from 'react-gtm-module';
 
-function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo, numberZap, titlePage, colorHead, colorBody, colorBodyItem, colorBodyBar, colorTitle, colorText, colorButton, atacado }) {
+function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap, titlePage, colorHead, colorBody, colorBodyItem, colorBodyBar, colorTitle, colorText, colorButton, atacado }) {
 
     const [dataProdut, setDataProdut] = useState(listProduts);
     const [dataOperation, setDbOperation] = useState(listOperation);
@@ -23,11 +23,13 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo
     const [cardSelected, setCardSelected] = useState([]);
     const [itemCart, setItemCart] = useState([]);
 
-    const [sizeP, setSizeP] = useState(0);
-    const [sizeM, setSizeM] = useState(0);
-    const [sizeG, setSizeG] = useState(0);
-    const [sizeGG, setSizeGG] = useState(0);
-    const [idColorSelect, setIdColorSelect] = useState("");
+    const [totalCart, setTotalCart] = useState(0);
+
+    const [quantUnd, setQuantUnd] = useState(0);
+    const [quantCx, setQuantCx] = useState(0);
+    const [radioUndOn, setRadioUndOn] = useState(false);
+    const [radioCxOn, setRadioCxOn] = useState(false);
+
     const [nameColorSelect, setNameColorSelect] = useState("");
 
     const [descriptOn, setDescriptOn] = useState(false);
@@ -44,13 +46,12 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo
     const [alertInputSize, setAlertInputSize] = useState("border-gray-100");
     const [alertInputSizeTextOn, setAlertInputSizeTextOn] = useState(false);
 
-    // const countListCart = itemCart.length;
-    const countListCart = 2;
+    const countListCart = itemCart.length;
 
-    useEffect(() => {
-        setIdColorSelect(cardSelected.capa);
-        setGrupColor(cardSelected.color);
-    }, [modalProdut]);
+    // useEffect(() => {
+    //     setIdColorSelect(cardSelected.capa);
+    //     setGrupColor(cardSelected.color);
+    // }, [modalProdut]);
 
     useEffect(() => {
         grupColor !== undefined && setArrayColor(grupColor.split(","));
@@ -68,33 +69,46 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo
         }
     }, [produtColor]);
 
+    function onInputUnd() {
+        setRadioUndOn(true);
+        setRadioCxOn(false);
+    };
+
+    function onInputCx() {
+        setRadioUndOn(false);
+        setRadioCxOn(true);
+    };
+
     function openModalProdut(item) {
         setCardSelected(item);
         setModalProdut(true);
         setFixedOn("");
         setTopFixed("fixed top-0");
     };
-
+    
     function openModalCart() {
+        setTotalCart(itemCart.reduce((a, b) => a + b.total, 0));
+        console.log(totalCart);
         setModalCart(true)
         setFixedOn("")
         setTopFixed("fixed top-0")
     };
 
     function openModalAddCart() {
-        if ( sizeP + sizeM + sizeG + sizeGG === 0) {
+        
+        if ( quantCx === 0) {
             alert("Por favor, escolha pelo menos uma opções de tamanho.");
             setAlertInputSize("border-2 border-red-300");
             setAlertInputSizeTextOn(true);
         } else {
-            setModalAddCart(true)
+            setModalAddCart(true);
             setAlertInputSize("border-gray-100");
             setAlertInputSizeTextOn(false);
         }
     };
 
     function AddCartAndSend() {
-        if ( sizeP + sizeM + sizeG + sizeGG === 0) {
+        if ( quantCx === 0) {
             alert("Por favor, escolha pelo menos uma opções de tamanho.");
             setAlertInputSize("border-2 border-red-300");
             setAlertInputSizeTextOn(true);
@@ -125,23 +139,15 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo
     function AddCartAndFixedProdut() {
         handleAddItemCart()
         setModalAddCart(false)
-        setSizeP(0);
-        setSizeM(0);
-        setSizeG(0);
-        setSizeGG(0);
-        document.getElementById('sizeP').value = "";
-        document.getElementById('sizeM').value = "";
-        document.getElementById('sizeG').value = "";
-        document.getElementById('sizeGG').value = "";
+        quantUnd(0);
+        quantCx(0);
     };
 
     function AddCartAndExitProdut() {
         handleAddItemCart()
         setTopFixed("")
-        setSizeP(0);
-        setSizeM(0);
-        setSizeG(0);
-        setSizeGG(0);
+        setQuantUnd(0);
+        setQuantCx(0);
         setModalAddCart(false)
         setModalProdut(false)
         setFixedOn("fixed")
@@ -151,11 +157,8 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo
         setModalProdut(false)
         setFixedOn("fixed")
         setTopFixed("")
-        setSizeP(0);
-        setSizeM(0);
-        setSizeG(0);
-        setSizeGG(0);
-        setIdColorSelect("")
+        setQuantUnd(0);
+        setQuantCx(0);
         setAlertInputSize("border-gray-100");
         setAlertInputSizeTextOn(false);
     };
@@ -181,11 +184,6 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo
         setModalSendZap(false)
         //     setFixedOn("fixed")
         //     setTopFixed("")
-        //     setSizeP(0);
-        //     setSizeM(0);
-        //     setSizeG(0);
-        //     setSizeGG(0);
-        //     setColorSelect("")
     };
 
     function closeModalTableSize() {
@@ -211,13 +209,12 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo
         setModalTanks(false)
         setFixedOn("fixed")
         setTopFixed("")
-        // setItemCart([])
     };
 
     function topFunction() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
-    }
+    };
 
     function deleteItemCart(key) {
         const tempListCart = [...itemCart];
@@ -232,40 +229,39 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, pastaLogo, logo
 
 
     const handleAddItemCart = () => {
-        const refTemp = cardSelected.ref;
-        const idTemp = idColorSelect;
-        // const corTemp = nameColorSelect;
 
-        const selectAddProdutColor = dataColor.filter(dataColor => dataColor.id === idTemp);
-        console.log(selectAddProdutColor)
+        const totalTemp = cardSelected.valueCx * quantCx;
 
         const newItem = {
-            ref: refTemp,
-            id: idTemp,
-            cor: selectAddProdutColor[0].name,
-            img: idTemp,
-            sizeP: parseFloat(sizeP),
-            sizeM: parseFloat(sizeM),
-            sizeG: parseFloat(sizeG),
-            sizeGG: parseFloat(sizeGG),
-            // value: parseFloat(cardSelected.price),
-            value: (atacado === false) ? parseFloat(cardSelected.price) : parseFloat(cardSelected.priceatacado),
+            ref: cardSelected.ref,
+            img: cardSelected.ref,
+            produt: cardSelected.produt,
+            type: cardSelected.type,
+            size: cardSelected.size,
+            valueUnd: parseFloat(cardSelected.valueUnd),
+            valueCx: parseFloat(cardSelected.valueCx),
+            quantUnd: parseFloat(quantUnd),
+            quantCx: parseFloat(quantCx),
+            total: totalTemp,
         };
 
         const newItems = [...itemCart, newItem];
 
         setItemCart(newItems);
+
     };
     
     function sendZap() {
         var headOrder = `Novo pedido Nº${Math.floor(Math.random() * 65536)} - ${nameOrder} \n`;
-        var footerOrder = `\n ${nameOrder}, em alguns instantes montarei seu pedido!`;
+        var footerOrder = `\n ${nameOrder}, por gentileza, responda essa mensagem com o endereço e a forma de pagamento`;
         var bodyOrder = itemCart.map(function (item) {
             return `
-REF: ${item.ref}-${item.id}
-Cor: ${item.cor}
-${(item.sizeP !== 0) ? `P - Quant: ${item.sizeP} \n` : ""}${(item.sizeM !== 0) ? `M - Quant: ${item.sizeM} \n` : ""}${(item.sizeG !== 0) ? `G - Quant: ${item.sizeG} \n` : ""}${(item.sizeGG !== 0) ? `GG - Quant: ${item.sizeGG}` : ""}
-Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + item.sizeGG))} \n`;
+${item.produt} - ${item.type}
+${item.size}
+
+${(item.quantUnd !== 0) ? `Unidades: ${item.quantUnd} \n` : ""}
+${(item.quantCx !== 0) ? `Caixas: ${item.quantCx} \n` : ""}
+Valor Total: ${moeda(totalCart)} \n`;
         });
         headOrder = window.encodeURIComponent(headOrder);
         bodyOrder = window.encodeURIComponent(bodyOrder);
@@ -302,7 +298,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                             <div className="flex items-center">
                                 <p className="text-white pr-2">Loja está</p>
                                 {( infoBD.operation === "on" ) ? 
-                                    <button className="bg-green-500 text-white px-2 py-1 rounded-lg">aberto</button>
+                                    <button className="bg-green-500 text-white px-2 py-1 rounded-lg">aberta</button>
                                     :  
                                     <button className="bg-red-500 text-white px-2 py-1 rounded"> fechada </button>
                                 }
@@ -418,7 +414,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                             <div className="w-full flex items-center">
                                                 <div className="px-2 py-1 bg-green-700 rounded">
                                                     <p className="text-base" style={{ color: colorTitle }}>
-                                                        R$ {item.valueCx}
+                                                        {moeda(item.valueCx * 1)}
                                                     </p>
                                                     <p className="text-sm" style={{ color: colorTitle }}>
                                                         a caixa
@@ -426,7 +422,7 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                                 </div>
                                                 <div className="p-1 ml-1">
                                                     <p className="text-base" style={{ color: colorTitle }}>
-                                                        R$ {item.valueUnd}
+                                                        {moeda(item.valueUnd * 1)}
                                                     </p>
                                                     <p className="text-sm" style={{ color: colorTitle }}>
                                                         a unidade
@@ -548,21 +544,20 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                             <div>
                                                 <p>Quero pedir:</p>
                                             </div>
-                                            <div className="flex justify-start items-center text-center mx-1">
+                                            <div 
+                                                className="flex justify-start items-center text-center mx-1"
+                                                onClick={()=> onInputCx()}
+                                            >
                                                 <input
                                                     className={`h-6 w-6 mr-2 ${alertInputSize}`}
-                                                    min="0"
-                                                    max="50"
-                                                    placeholder={sizeP}
                                                     type="radio"
-                                                    id="sizeP"
+                                                    id="radioCx"
                                                     name="quantBeer"
-                                                    onChange={(event) => setSizeP(event.target.value)}
                                                 />
                                                 <div className="">
-                                                    <p className="text-base font-bold">
+                                                    <label className="text-base font-bold" for="radioCx">
                                                         Caixa por R$ {cardSelected.valueCx}
-                                                    </p>
+                                                    </label>
                                                 </div>
                                                 {/* <input
                                                     className={`w-2/5 px-2 ml-4 h-8 shadow rounded-md border bg-white border-gray-400 text-center ${alertInputSize} ${alertInputSize}`}
@@ -574,21 +569,20 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                                     onChange={(event) => setSizeP(event.target.value)}
                                                 /> */}
                                             </div>
-                                            <div className="flex justify-start items-center text-center mx-1 py-1 mt-2">
+                                            <div 
+                                                className="flex justify-start items-center text-center mx-1 py-1 mt-2"
+                                                onClick={()=> onInputUnd()}
+                                            >
                                                 <input
                                                     className={`h-6 w-6 mr-2 ${alertInputSize}`}
-                                                    min="0"
-                                                    max="50"
-                                                    placeholder={sizeP}
                                                     type="radio"
-                                                    id="sizeP"
+                                                    id="radioUnd"
                                                     name="quantBeer"
-                                                    onChange={(event) => setSizeP(event.target.value)}
                                                 />
                                                 <div className="">
-                                                    <p className="text-base font-bold">
+                                                    <label className="text-base font-bold" for="radioUnd">
                                                         Unidade por R$ {cardSelected.valueUnd}
-                                                    </p>
+                                                    </label>
                                                 </div>
                                                 {/* <input
                                                     className={`w-2/5 px-2 ml-4 h-8 shadow rounded-md border bg-white border-gray-400 text-center ${alertInputSize} ${alertInputSize}`}
@@ -634,23 +628,44 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                                     <p className="mx-1 text-sm text-center text-red-300">digite a quantidade que deseja</p>
                                                 </div>
                                         }
-                                        <div className="flex justify-center items-center py-2">
-                                            <button className="h-8 w-8 mx-2 rounded-full bg-white shadow-lg border border-gray-200">
-                                                <p className="text-gray-900 font-bold">-</p>
-                                            </button>
-                                            <input
-                                                className={`w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-200 ${alertInputSize}`}
-                                                min="0"
-                                                max="50"
-                                                placeholder={sizeM}
-                                                type="number"
-                                                id="sizeM"
-                                                onChange={(event) => setSizeM(event.target.value)}
-                                            />
-                                            <button className="h-8 w-8 mx-2 rounded-full shadow-lg border border-gray-200">
-                                                <p className="text-gray-900 font-bold">+</p>
-                                            </button>
-                                        </div>
+                                        { radioUndOn &&
+                                            <div className="flex justify-center items-center py-2">
+                                                <button className="h-8 w-8 mx-2 rounded-full bg-white shadow-lg border border-gray-200">
+                                                    <p className="text-gray-900 font-bold">-</p>
+                                                </button>
+                                                <input
+                                                    className={`w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-200 ${alertInputSize}`}
+                                                    min="0"
+                                                    max="50"
+                                                    placeholder={`${quantUnd} unidades`}
+                                                    type="number"
+                                                    id="quantUnd"
+                                                    onChange={(event) => setQuantUnd(event.target.value)}
+                                                />
+                                                <button className="h-8 w-8 mx-2 rounded-full shadow-lg border border-gray-200">
+                                                    <p className="text-gray-900 font-bold">+</p>
+                                                </button>
+                                            </div>
+                                        }
+                                        { radioCxOn &&
+                                            <div className="flex justify-center items-center py-2">
+                                                <button className="h-8 w-8 mx-2 rounded-full bg-white shadow-lg border border-gray-200">
+                                                    <p className="text-gray-900 font-bold">-</p>
+                                                </button>
+                                                <input
+                                                    className={`w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-200 ${alertInputSize}`}
+                                                    min="0"
+                                                    max="50"
+                                                    placeholder={`${quantCx} caixas`}
+                                                    type="number"
+                                                    id="quantCx"
+                                                    onChange={(event) => setQuantCx(event.target.value)}
+                                                />
+                                                <button className="h-8 w-8 mx-2 rounded-full shadow-lg border border-gray-200">
+                                                    <p className="text-gray-900 font-bold">+</p>
+                                                </button>
+                                            </div>
+                                        }
                                         {/* descriçao e especificaçoes mobile */}
                                         {/* <div className="md:hidden">
                                             <div className="md:w-2/5 mb-2 border border-gray-100 rounded-md shadow">
@@ -816,37 +831,35 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                             <div className="w-2/6 ml-1">
                                                 <img
                                                     className="w-full h-auto rounded-xl object-cover object-top"
-                                                    src={`/imgs/produts/${item.ref}.jpg`}
+                                                    src={`/imgs/produts/${item.ref}.png`}
                                                 />
                                             </div>
                                             <div className="w-3/6 ml-1 px-1 py-2">
-                                                {item.p !== 0 &&
+                                                <div className="">
+                                                    <p className="text-gray-900 text-base">{item.produt}</p>
+                                                    <p className="text-gray-600 text-sm">{item.type} - {item.size}</p>
+
+                                                </div>
+                                                {item.quantCx !== 0 &&
                                                     <div className="flex">
-                                                        <p className="text-gray-600 text-sm">Tamanho P: </p>
-                                                        <p className="font-medium ml-2 text-sm uppercase">{item.sizeP}</p>
+                                                        <p className="text-gray-600 text-sm">Caixas: </p>
+                                                        <p className="font-medium ml-2 text-sm uppercase">
+                                                            {item.quantCx}
+                                                        </p>
                                                     </div>
                                                 }
-                                                {item.m !== 0 &&
+                                                {item.quantUnd !== 0 &&
                                                     <div className="flex">
-                                                        <p className="text-gray-600 text-sm">Tamanho M: </p>
-                                                        <p className="font-medium ml-2 text-sm uppercase">{item.sizeM}</p>
-                                                    </div>
-                                                }
-                                                {item.g !== 0 &&
-                                                    <div className="flex">
-                                                        <p className="text-gray-600 text-sm">Tamanho G: </p>
-                                                        <p className="font-medium ml-2 text-sm uppercase">{item.sizeG}</p>
-                                                    </div>
-                                                }
-                                                {item.gg !== 0 &&
-                                                    <div className="flex">
-                                                        <p className="text-gray-600 text-sm">Tamanho GG: </p>
-                                                        <p className="font-medium ml-2 text-sm uppercase">{item.sizeGG}</p>
+                                                        <p className="text-gray-600 text-sm">Unidade: </p>
+                                                        <p className="font-medium ml-2 text-sm uppercase">
+                                                            {item.quantUnd}
+                                                        </p>
                                                     </div>
                                                 }
                                                 <div className="">
                                                     <p className="text-gray-600 text-sm">Valor total: </p>
-                                                    <p className="font-medium uppercase">{moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + item.sizeGG))}
+                                                    <p className="font-medium uppercase">
+                                                        {moeda(item.total)}
                                                     </p>
                                                 </div>
                                             </div>
@@ -862,7 +875,8 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                 </div>
                                 <div className="flex justify-between items-center py-2">
                                     <p>
-                                        Total de produtos: {countListCart}
+                                        {/* Total de produtos: {countListCart} */}
+                                        Total de produtos: {moeda(totalCart)}
                                     </p>
                                     <button
                                         className="w-auto bg-blue-500 px-2 py-2 rounded-md text-sm text-white"
@@ -903,12 +917,12 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                                     >
                                         Ver outros produtos
                                     </button>
-                                    <button
+                                    {/* <button
                                         className="w-full border-2 border-blue-500 px-2 py-2 rounded-md text-sm text-blue-500"
                                         onClick={() => AddCartAndFixedProdut()}
                                     >
                                         Escolher outra cor
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
                         </div>
@@ -1139,8 +1153,8 @@ Valor Total: R$ ${moeda(item.value * (item.sizeP + item.sizeM + item.sizeG + ite
                         </div>
                         <div
                             className="relative"
-                            >
                             onClick={() => openModalCart()}
+                            >
                             <img
                                 className="w-6 h-6"
                                 src={`/imgs/icons/icon-cart-white.png`}

@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import React, { useState, useEffect } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-// import TagManager from 'react-gtm-module';
 
-function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap, titlePage, colorHead, colorBody, colorBodyItem, colorBodyBar, colorTitle, colorText, colorButton, atacado }) {
+function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap, titlePage, 
+    colorHead, colorBody, colorBodyItem, colorBodyBar, colorTitle, colorText, colorButton, atacado }) {
 
     const [dataProdut, setDataProdut] = useState(listProduts);
     const [dataOperation, setDbOperation] = useState(listOperation);
@@ -23,10 +23,10 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     const [cardSelected, setCardSelected] = useState([]);
     const [itemCart, setItemCart] = useState([]);
 
+    const [typePaySend, setTypePaySend] = useState("Pix");
     const [totalCart, setTotalCart] = useState(0);
-
+    
     const [quantUnd, setQuantUnd] = useState(0);
-    const [quantCx, setQuantCx] = useState(0);
     const [radioUndOn, setRadioUndOn] = useState(false);
     const [radioCxOn, setRadioCxOn] = useState(false);
 
@@ -39,7 +39,8 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     const [arrayColor, setArrayColor] = useState([]);
     const [produtColor, setProdutColor] = useState([]);
 
-    const [nameOrder, setNameOrder] = useState("");
+    const [nameSend, setNameSend] = useState("");
+    const [localSend, setLocalSend] = useState("");
 
     const [topFixed, setTopFixed] = useState("");
     
@@ -48,36 +49,21 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
 
     const countListCart = itemCart.length;
 
-    // useEffect(() => {
-    //     setIdColorSelect(cardSelected.capa);
-    //     setGrupColor(cardSelected.color);
-    // }, [modalProdut]);
-
     useEffect(() => {
-        grupColor !== undefined && setArrayColor(grupColor.split(","));
-    }, [grupColor]);
+        setTotalCart(itemCart.reduce((a, b) => a + b.total, 0));
+        console.log("uptotalcart")
+    }, [totalCart]);
 
-    // useEffect(() => {
-    //     setProdutColor(arrayColor.map(id => dataColor.find(obj => obj.id == id) || {}))
-    // }, [arrayColor]);
-
-    useEffect(() => {
-        for (var i = 0; i < produtColor.length; i++) {
-            if (produtColor[i].id === idColorSelect) {
-                setNameColorSelect(produtColor[i].name)
-            }
+    function subQuantUnd() {
+        if (quantUnd === 0) {
+            setQuantUnd(0)
+        } else {
+            setQuantUnd(quantUnd - 1)
         }
-    }, [produtColor]);
-
-    function onInputUnd() {
-        setRadioUndOn(true);
-        setRadioCxOn(false);
-    };
-
-    function onInputCx() {
-        setRadioUndOn(false);
-        setRadioCxOn(true);
-    };
+    }
+    function somQuantUnd() {
+        setQuantUnd(quantUnd + 1)
+    }
 
     function openModalProdut(item) {
         setCardSelected(item);
@@ -88,7 +74,7 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     
     function openModalCart() {
         setTotalCart(itemCart.reduce((a, b) => a + b.total, 0));
-        console.log(totalCart);
+        // console.log(totalCart);
         setModalCart(true)
         setFixedOn("")
         setTopFixed("fixed top-0")
@@ -96,8 +82,8 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
 
     function openModalAddCart() {
         
-        if ( quantCx === 0) {
-            alert("Por favor, escolha pelo menos uma opções de tamanho.");
+        if ( quantUnd === 0) {
+            alert("Por favor, escolha pelo menos uma opção.");
             setAlertInputSize("border-2 border-red-300");
             setAlertInputSizeTextOn(true);
         } else {
@@ -108,8 +94,8 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     };
 
     function AddCartAndSend() {
-        if ( quantCx === 0) {
-            alert("Por favor, escolha pelo menos uma opções de tamanho.");
+        if ( quantUnd === 0) {
+            alert("Por favor, escolha pelo menos uma opção.");
             setAlertInputSize("border-2 border-red-300");
             setAlertInputSizeTextOn(true);
         } else {
@@ -140,14 +126,12 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
         handleAddItemCart()
         setModalAddCart(false)
         quantUnd(0);
-        quantCx(0);
     };
 
     function AddCartAndExitProdut() {
         handleAddItemCart()
         setTopFixed("")
         setQuantUnd(0);
-        setQuantCx(0);
         setModalAddCart(false)
         setModalProdut(false)
         setFixedOn("fixed")
@@ -158,7 +142,6 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
         setFixedOn("fixed")
         setTopFixed("")
         setQuantUnd(0);
-        setQuantCx(0);
         setAlertInputSize("border-gray-100");
         setAlertInputSizeTextOn(false);
     };
@@ -169,21 +152,8 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
         setTopFixed("")
     };
 
-    // function closeModalAddCart() {
-    //     setModalAddCart(false)
-    //     setFixedOn("fixed")
-    //     setTopFixed("")
-    //     setSizeP(0);
-    //     setSizeM(0);
-    //     setSizeG(0);
-    //     setSizeGG(0);
-    //     setIdColorSelect("")
-    // };
-
     function closeModalSendZap() {
         setModalSendZap(false)
-        //     setFixedOn("fixed")
-        //     setTopFixed("")
     };
 
     function closeModalTableSize() {
@@ -198,17 +168,8 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
         setModalContact(false)
     };
 
-    function completeOrder() {
-        setModalSendZap(false)
-        setModalCart(false)
-        setModalProdut(false)
-        setModalTanks(true)
-    };
-
     function closeModalTanks() {
-        setModalTanks(false)
-        setFixedOn("fixed")
-        setTopFixed("")
+        window.location.reload();
     };
 
     function topFunction() {
@@ -230,7 +191,7 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
 
     const handleAddItemCart = () => {
 
-        const totalTemp = cardSelected.valueCx * quantCx;
+        const totalTemp = cardSelected.valueUnd * quantUnd;
 
         const newItem = {
             ref: cardSelected.ref,
@@ -239,9 +200,7 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
             type: cardSelected.type,
             size: cardSelected.size,
             valueUnd: parseFloat(cardSelected.valueUnd),
-            valueCx: parseFloat(cardSelected.valueCx),
             quantUnd: parseFloat(quantUnd),
-            quantCx: parseFloat(quantCx),
             total: totalTemp,
         };
 
@@ -252,23 +211,29 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     };
     
     function sendZap() {
-        var headOrder = `Novo pedido Nº${Math.floor(Math.random() * 65536)} - ${nameOrder} \n`;
-        var footerOrder = `\n ${nameOrder}, por gentileza, responda essa mensagem com o endereço e a forma de pagamento`;
+        // var headOrder = `Novo pedido Nº${Math.floor(Math.random() * 65536)} - ${nameOrder} \n`;
+        var headOrder = `Olá, meu nome é ${nameSend}, gostaria de fazer o seguinte pedido:`;
         var bodyOrder = itemCart.map(function (item) {
             return `
-${item.produt} - ${item.type}
-${item.size}
-
-${(item.quantUnd !== 0) ? `Unidades: ${item.quantUnd} \n` : ""}
-${(item.quantCx !== 0) ? `Caixas: ${item.quantCx} \n` : ""}
-Valor Total: ${moeda(totalCart)} \n`;
+\n${item.produt} - ${item.type} ${item.size}
+${(item.quantUnd !== 0) ? `Unidades: ${item.quantUnd}` : ""}
+Total item: ${moeda(item.quantUnd * item.valueUnd)} \n`;
         });
+        // var totalOrder = ``;
+        var totalOrder = `\nValor total do pedido: ${moeda(totalCart)}\n`;
+        var payOrder = `Forma de pagamento: ${typePaySend}\n`;
+        var localOrder = `Endereço da entrega: ${localSend}\n`;
+        var idOrder = `\nPedido Nº${Math.floor(Math.random() * 65536)}`;
+
         headOrder = window.encodeURIComponent(headOrder);
         bodyOrder = window.encodeURIComponent(bodyOrder);
-        footerOrder = window.encodeURIComponent(footerOrder);
+        totalOrder = window.encodeURIComponent(totalOrder);
+        payOrder = window.encodeURIComponent(payOrder);
+        localOrder = window.encodeURIComponent(localOrder);
+        idOrder = window.encodeURIComponent(idOrder);
 
-        window.open("https://api.whatsapp.com/send?phone=" + numberZap + "&text=" + headOrder + bodyOrder + footerOrder, "_blank");
-        setTimeout(function () { completeOrder(); }, 5000);
+        window.open("https://api.whatsapp.com/send?phone=" + numberZap + "&text=" + headOrder + bodyOrder + totalOrder + payOrder + localOrder + idOrder, "_blank");
+        setTimeout(function () { setModalTanks(true); }, 2000);
     }
 
 
@@ -279,11 +244,19 @@ Valor Total: ${moeda(totalCart)} \n`;
                 <link rel="icon" src={`/imgs/${logo}.png`} />
             </Head>
 
-            <div className={`${topFixed} min-h-screen`} style={{ backgroundColor: colorBody }}>
+            <div 
+                className={`${topFixed} min-h-screen bg-gray-50`} 
+                // style={{ backgroundColor: colorBody }}
+                >
 
                 {/* Head Mobile */}
                 <div className="md:hidden">
-                    <div className="flex justify-center items-center py-6 shadow-md" style={{ backgroundColor: colorHead }}>
+                    <div 
+                        className="flex justify-center items-center py-6 shadow-md" 
+                        // style={{ backgroundImage: url("/bg-01.gif") }}
+                        // style={{ backgroundImage: `url(${BgHeadImg})` }}
+                        style={{ backgroundColor: colorHead }}
+                        >
                         <div className="flex justify-center items-center w-2/5">
                             <img
                                 className="object-cover h-32"
@@ -368,23 +341,29 @@ Valor Total: ${moeda(totalCart)} \n`;
                     </div>
                 </div> */}
 
-                <div className="flex md:justify-center px-4 py-4 overflow-x-auto" style={{ color: colorTitle }}>
+
+                {/* Menu Categorias  */}
+                <div 
+                    className="flex md:justify-center px-4 py-4 overflow-x-auto"
+                    style={{ backgroundColor: colorHead }}
+                    >
                     <div className="flex justify-center items-center flex-nowrap">
                         {listCategory.map((item, key) =>
                             <p key={key}
-                                className={`mx-2 text-sm${filterProdut === item.value && "text-base border border-white rounded-lg px-2 py-1"}`} onClick={() => setFilterProdut(item.value)}>
+                                className={`mx-2 text-sm text-white ${filterProdut === item.value && "text-base border border-white rounded-lg px-2 py-1"}`} onClick={() => setFilterProdut(item.value)}>
                                 {item.name}
                             </p>
                         )}
                     </div>
                 </div>
 
+                {/* Lista de Produtos */}
                 <div className="">
                     <div className="grid grid-cols-2 md:grid-cols-4 mt-5 gap-4 px-4 lg:px-20 xl:p-18">
                         {dataProdut.map((item, key) =>
                             item.category === filterProdut &&
-                            <div className="shadow-md rounded-lg flex relative"
-                                style={{ backgroundColor: colorBodyItem }}
+                            <div className="drop-shadow-md rounded-lg flex relative border border-gray-100"
+                                style={{ backgroundColor: colorBody }}
                                 key={key}
                             >
                                 <div 
@@ -402,32 +381,29 @@ Valor Total: ${moeda(totalCart)} \n`;
                                     <div className="py-1">
                                         <div className="w-full px-2 pb-2 pt-1"
                                             onClick={() => openModalProdut(item)}>
-                                            <h3 className="text-lg font-bold md:text-base text-yellow-500">
+                                            <h3 className="text-lg font-bold md:text-base text-gray-900">
                                                 {item.produt}
                                             </h3>
-                                            <p className="text-base text-yellow-500">
+                                            <p className="text-base text-gray-900">
                                                 {item.type} - {item.size}
                                             </p>
                                         </div>
                                         
                                         { (item.category === "cerveja")? 
                                             <div className="w-full flex items-center">
-                                                <div className="px-2 py-1 bg-green-700 rounded">
-                                                    <p className="text-base" style={{ color: colorTitle }}>
-                                                        {moeda(item.valueCx * 1)}
-                                                    </p>
-                                                    <p className="text-sm" style={{ color: colorTitle }}>
-                                                        a caixa
+                                                <div className="w-full px-1 py-1 bg-green-600 mb-1">
+                                                    <p className="text-sm font-bold text-center text-white">
+                                                        {moeda(item.valueUnd * 1)} a unidade
                                                     </p>
                                                 </div>
-                                                <div className="p-1 ml-1">
+                                                {/* <div className="p-1 ml-1">
                                                     <p className="text-base" style={{ color: colorTitle }}>
                                                         {moeda(item.valueUnd * 1)}
                                                     </p>
                                                     <p className="text-sm" style={{ color: colorTitle }}>
                                                         a unidade
                                                     </p>
-                                                </div>
+                                                </div> */}
                                             </div>
                                             :
                                             <div className="w-full">
@@ -450,7 +426,7 @@ Valor Total: ${moeda(totalCart)} \n`;
                                     </div>
                                 }
                                 {item.rank === "on" &&
-                                    <div className="absolute shadow right-2 -top-2 bg-green-500 px-2 rounded text-sm text-white">
+                                    <div className="absolute shadow right-2 -top-2 bg-green-500 px-2 py-1 rounded text-sm text-white">
                                         mais pedido
                                     </div>
                                 }
@@ -461,7 +437,8 @@ Valor Total: ${moeda(totalCart)} \n`;
                 </div>
 
                 <div className="h-sc1 pb-20"></div>
-
+                
+                {/* Modal Produto */}
                 {modalProdut && (
                     <div
                         className="flex justify-center items-center inset-0 fixed bg-white"
@@ -477,7 +454,7 @@ Valor Total: ${moeda(totalCart)} \n`;
                             {/* IMG Mobile */}
                             <div className="flex justify-center items-center md:hidden bg-white">
                                 <img
-                                    className="h-72 md:h-auto md:w-2/5 object-cover object-center"
+                                    className="h-44 md:h-auto md:w-2/5 object-cover object-center mb-8"
                                     src={`/imgs/produts/${cardSelected.ref}.png`}
                                     onClick={() => openModalImgSelect()}
                                 />
@@ -487,12 +464,12 @@ Valor Total: ${moeda(totalCart)} \n`;
                                 <div className="px-4 mt-3 mb-4 h-auto md:h-auto md:pt-8 md:px-8">
                                     <div className="flex items-center">
                                         <h3 className="text-lg font-bold">
-                                            {cardSelected.produt}
+                                            {cardSelected.produt} - {cardSelected.type}
                                         </h3>
                                     </div>
 
                                     <div className="mb-4 md:mb-8">
-                                        <p className="text-base">Caixa com {cardSelected.quant} - {cardSelected.size}</p>
+                                        <p className="text-base">Caixa com {cardSelected.quant} unidades - {cardSelected.size}</p>
                                         {/* <p className="text-base font-bold">
                                             
                                             R$ {cardSelected.valueUnd} a unidade
@@ -544,7 +521,7 @@ Valor Total: ${moeda(totalCart)} \n`;
                                             <div>
                                                 <p>Quero pedir:</p>
                                             </div>
-                                            <div 
+                                            {/* <div 
                                                 className="flex justify-start items-center text-center mx-1"
                                                 onClick={()=> onInputCx()}
                                             >
@@ -556,9 +533,9 @@ Valor Total: ${moeda(totalCart)} \n`;
                                                 />
                                                 <div className="">
                                                     <label className="text-base font-bold" for="radioCx">
-                                                        Caixa por R$ {cardSelected.valueCx}
+                                                        Caixa por {moeda(cardSelected.valueCx)}
                                                     </label>
-                                                </div>
+                                                </div> */}
                                                 {/* <input
                                                     className={`w-2/5 px-2 ml-4 h-8 shadow rounded-md border bg-white border-gray-400 text-center ${alertInputSize} ${alertInputSize}`}
                                                     min="0"
@@ -568,12 +545,12 @@ Valor Total: ${moeda(totalCart)} \n`;
                                                     id="sizeP"
                                                     onChange={(event) => setSizeP(event.target.value)}
                                                 /> */}
-                                            </div>
-                                            <div 
+                                            {/* </div> */}
+                                            {/* <div 
                                                 className="flex justify-start items-center text-center mx-1 py-1 mt-2"
                                                 onClick={()=> onInputUnd()}
-                                            >
-                                                <input
+                                            > */}
+                                                {/* <input
                                                     className={`h-6 w-6 mr-2 ${alertInputSize}`}
                                                     type="radio"
                                                     id="radioUnd"
@@ -581,9 +558,9 @@ Valor Total: ${moeda(totalCart)} \n`;
                                                 />
                                                 <div className="">
                                                     <label className="text-base font-bold" for="radioUnd">
-                                                        Unidade por R$ {cardSelected.valueUnd}
+                                                        Unidade por {moeda(cardSelected.valueUnd)}
                                                     </label>
-                                                </div>
+                                                </div> */}
                                                 {/* <input
                                                     className={`w-2/5 px-2 ml-4 h-8 shadow rounded-md border bg-white border-gray-400 text-center ${alertInputSize} ${alertInputSize}`}
                                                     min="0"
@@ -593,7 +570,7 @@ Valor Total: ${moeda(totalCart)} \n`;
                                                     id="sizeP"
                                                     onChange={(event) => setSizeP(event.target.value)}
                                                 /> */}
-                                            </div>
+                                            {/* </div> */}
                                             {/* <div className="w-1/2 text-center mx-1">
                                                 <p className="text-base font-bold">
                                                     R$ {cardSelected.valueCx}
@@ -623,18 +600,21 @@ Valor Total: ${moeda(totalCart)} \n`;
                                                 />
                                             </div> */}
                                         </div>
-                                        { alertInputSizeTextOn &&
+                                        {/* { alertInputSizeTextOn &&
                                                 <div className="w-full md:w-2/5 mb-4">
                                                     <p className="mx-1 text-sm text-center text-red-300">digite a quantidade que deseja</p>
                                                 </div>
-                                        }
-                                        { radioUndOn &&
+                                        } */}
+                                        {/* { radioUndOn && */}
                                             <div className="flex justify-center items-center py-2">
-                                                <button className="h-8 w-8 mx-2 rounded-full bg-white shadow-lg border border-gray-200">
+                                                <button
+                                                    className="h-8 w-8 mx-2 rounded-full bg-white shadow-lg border border-gray-200"
+                                                    onClick={() => subQuantUnd()}
+                                                >
                                                     <p className="text-gray-900 font-bold">-</p>
                                                 </button>
                                                 <input
-                                                    className={`w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-200 ${alertInputSize}`}
+                                                    className={`text-gray-600 w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-200 ${alertInputSize}`}
                                                     min="0"
                                                     max="50"
                                                     placeholder={`${quantUnd} unidades`}
@@ -642,30 +622,34 @@ Valor Total: ${moeda(totalCart)} \n`;
                                                     id="quantUnd"
                                                     onChange={(event) => setQuantUnd(event.target.value)}
                                                 />
-                                                <button className="h-8 w-8 mx-2 rounded-full shadow-lg border border-gray-200">
+                                                <button 
+                                                    className="h-8 w-8 mx-2 rounded-full shadow-lg border border-gray-200"
+                                                    onClick={() => somQuantUnd()}
+                                                    >
+                                                    
                                                     <p className="text-gray-900 font-bold">+</p>
                                                 </button>
                                             </div>
-                                        }
-                                        { radioCxOn &&
-                                            <div className="flex justify-center items-center py-2">
-                                                <button className="h-8 w-8 mx-2 rounded-full bg-white shadow-lg border border-gray-200">
-                                                    <p className="text-gray-900 font-bold">-</p>
-                                                </button>
-                                                <input
-                                                    className={`w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-200 ${alertInputSize}`}
-                                                    min="0"
-                                                    max="50"
-                                                    placeholder={`${quantCx} caixas`}
-                                                    type="number"
-                                                    id="quantCx"
-                                                    onChange={(event) => setQuantCx(event.target.value)}
-                                                />
-                                                <button className="h-8 w-8 mx-2 rounded-full shadow-lg border border-gray-200">
-                                                    <p className="text-gray-900 font-bold">+</p>
-                                                </button>
-                                            </div>
-                                        }
+                                         {/* } */}
+                                        {/* // { radioCxOn && 
+                                        //     <div className="flex justify-center items-center py-2">
+                                        //         <button className="h-8 w-8 mx-2 rounded-full bg-white shadow-lg border border-gray-200">
+                                        //             <p className="text-gray-900 font-bold">-</p>
+                                        //         </button>
+                                        //         <input
+                                        //             className={`w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-200 ${alertInputSize}`}
+                                        //             min="0"
+                                        //             max="50"
+                                        //             placeholder={`${quantCx} caixas`}
+                                        //             type="number"
+                                        //             id="quantCx"
+                                        //             onChange={(event) => setQuantCx(event.target.value)}
+                                        //         />
+                                        //         <button className="h-8 w-8 mx-2 rounded-full shadow-lg border border-gray-200">
+                                        //             <p className="text-gray-900 font-bold">+</p>
+                                        //         </button>
+                                        //     </div>
+                                        // }
                                         {/* descriçao e especificaçoes mobile */}
                                         {/* <div className="md:hidden">
                                             <div className="md:w-2/5 mb-2 border border-gray-100 rounded-md shadow">
@@ -772,12 +756,12 @@ Valor Total: ${moeda(totalCart)} \n`;
                                         >
                                             Adicionar carrinho
                                         </button>
-                                        <button
+                                        {/* <button
                                             className="w-full bg-green-500 px-2 py-3 rounded-md text-sm text-white"
                                             onClick={() => AddCartAndSend()}
                                         >
                                             Finalizar pedido
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                             </div>
@@ -801,6 +785,7 @@ Valor Total: ${moeda(totalCart)} \n`;
                     </div>
                 )}
 
+                {/* Modal Carrinho */}
                 {modalCart && (
                     <div
                         className="flex justify-center items-center inset-0 fixed bg-black bg-opacity-50"
@@ -840,14 +825,6 @@ Valor Total: ${moeda(totalCart)} \n`;
                                                     <p className="text-gray-600 text-sm">{item.type} - {item.size}</p>
 
                                                 </div>
-                                                {item.quantCx !== 0 &&
-                                                    <div className="flex">
-                                                        <p className="text-gray-600 text-sm">Caixas: </p>
-                                                        <p className="font-medium ml-2 text-sm uppercase">
-                                                            {item.quantCx}
-                                                        </p>
-                                                    </div>
-                                                }
                                                 {item.quantUnd !== 0 &&
                                                     <div className="flex">
                                                         <p className="text-gray-600 text-sm">Unidade: </p>
@@ -873,20 +850,19 @@ Valor Total: ${moeda(totalCart)} \n`;
                                         </div>
                                     )}
                                 </div>
-                                <div className="flex justify-between items-center py-2">
-                                    <p>
-                                        {/* Total de produtos: {countListCart} */}
-                                        Total de produtos: {moeda(totalCart)}
+                                <div className="flex-col justify-center items-center py-2">
+                                    <p className="text-center pb-1">
+                                        Total do carrinho: {moeda(totalCart)}
                                     </p>
                                     <button
-                                        className="w-auto bg-blue-500 px-2 py-2 rounded-md text-sm text-white"
+                                        className="w-full bg-blue-500 px-2 py-2 rounded-md text-sm text-white"
                                         onClick={() => openModalSendZap()}
                                     >
                                         Finalizar pedido
                                     </button>
                                 </div>
                                 <button
-                                    className="bg-gray-400 text-white absolute top-3 right-3 w-6 h-6 rounded-full text-sm"
+                                    className="bg-gray-400 text-white absolute top-3 right-3 w-6 h-6 rounded-full text-xs"
                                     type="button"
                                     onClick={closeModalCart}
                                 >x</button>
@@ -895,6 +871,7 @@ Valor Total: ${moeda(totalCart)} \n`;
                     </div>
                 )}
 
+                {/* Modal Add Carrinho */}
                 {modalAddCart && (
                     <div
                         className="flex justify-center items-center inset-0 fixed bg-black bg-opacity-50"
@@ -917,6 +894,12 @@ Valor Total: ${moeda(totalCart)} \n`;
                                     >
                                         Ver outros produtos
                                     </button>
+                                    <button
+                                        className="w-full bg-green-500 px-2 py-2 rounded-md text-sm text-white"
+                                        onClick={() => AddCartAndSend()}
+                                    >
+                                        Finalizar pedido
+                                    </button>
                                     {/* <button
                                         className="w-full border-2 border-blue-500 px-2 py-2 rounded-md text-sm text-blue-500"
                                         onClick={() => AddCartAndFixedProdut()}
@@ -929,42 +912,7 @@ Valor Total: ${moeda(totalCart)} \n`;
                     </div>
                 )}
 
-                {modalTableSize && (
-                    <div
-                        className="flex justify-center items-center inset-0 fixed bg-black bg-opacity-50"
-                    >
-                        <img
-                            className="bg-white w-3/4 lg:w-1/3 rounded-xl shadow-md relative"
-                            src={`/imgs/icons/table-size.jpg`}
-                        />
-                        <button
-                            className="bg-gray-400 text-white absolute top-3 right-3 w-6 h-6 rounded-full text-sm"
-                            type="button"
-                            onClick={closeModalTableSize}
-                        >
-                            x
-                        </button>
-                    </div>
-                )}
-
-                {modalImgSelect && (
-                    <div
-                        className="flex justify-center items-center inset-0 fixed bg-black bg-opacity-80"
-                    >
-                        <img
-                            className="w-4/5 h-4/5 object-cover object-center rounded-xl shadow-md relative"
-                            src={`/imgs/produts/${cardSelected.ref}.jpg`}
-                        />
-                        <button
-                            className="bg-gray-500 text-white absolute top-3 right-3 w-6 h-6 rounded-full text-sm"
-                            type="button"
-                            onClick={closeModalImgSelect}
-                        >
-                            x
-                        </button>
-                    </div>
-                )}
-
+                {/* Modal Contato */}
                 {modalContact && (
                     <div
                         className="flex justify-center items-center inset-0 fixed bg-black bg-opacity-70"
@@ -1033,6 +981,7 @@ Valor Total: ${moeda(totalCart)} \n`;
                     </div>
                 )}
 
+                {/* Modal Enviar Pedido Zap */}
                 {modalSendZap && (
                     <div
                         className="flex justify-center items-center inset-0 fixed bg-black bg-opacity-50"
@@ -1042,19 +991,49 @@ Valor Total: ${moeda(totalCart)} \n`;
                                 <div className="flex flex-col items-center mb-4">
                                     <img
                                         className="w-16 h-16 mb-2"
-                                        src={`/imgs/ions/icon-send-order.png`}
+                                        src={`/imgs/icons/icon-send-order.png`}
                                     />
-                                    <p>
-                                        Qual seu nome?
-                                    </p>
                                 </div>
                                 <div className="">
+                                    <p className="text-sm">
+                                        Nome
+                                    </p>
                                     <input
                                         className="px-2 py-2 mb-2 w-full shadow rounded-md border border-gray-100 text-center bg-white"
-                                        placeholder="Seu nome ou da Empresa"
+                                        placeholder="Digite seu nome ou apelido"
                                         type="text"
-                                        onChange={(event) => setNameOrder(event.target.value)}
+                                        onChange={(event) => setNameSend(event.target.value)}
                                     />
+                                    <p className="text-sm">
+                                        Endereço
+                                    </p>
+                                    <input
+                                        className="px-2 py-2 mb-2 w-full shadow rounded-md border border-gray-100 text-center bg-white"
+                                        placeholder="Digite seu endereço completo"
+                                        type="text"
+                                        onChange={(event) => setLocalSend(event.target.value)}
+                                    />
+                                    <p className="text-sm">
+                                        Forma de Pagamento
+                                    </p>
+                                    {/* <input
+                                        className="px-2 py-2 mb-2 w-full shadow rounded-md border border-gray-100 text-center bg-white"
+                                        placeholder="Digite seu endereço completo"
+                                        type="text"
+                                        onChange={(event) => setTypePaySend(event.target.value)}
+                                    /> */}
+                                    <select 
+                                        className="px-2 py-2 mb-2 w-full shadow rounded-md border border-gray-100 text-center bg-white"
+                                        placeholder="Digite seu endereço completo"
+                                        type="text"
+                                        onChange={(event) => setTypePaySend(event.target.value)}
+                                    >
+                                        <option value="">escolha uma opção</option>
+                                        <option value="dinheiro">Dinheiro</option>
+                                        <option value="cartão débito">cartão débito</option>
+                                        <option value="cartão crédito">Cartão crédito</option>
+                                        <option value="pix">Pix</option>
+                                    </select>
                                     <button
                                         className="w-full bg-blue-500 px-2 py-2 rounded-md text-sm text-white"
                                         onClick={() => sendZap()}
@@ -1072,6 +1051,7 @@ Valor Total: ${moeda(totalCart)} \n`;
                     </div>
                 )}
 
+                {/* Modal Obrigado */}
                 {modalTanks && (
                     <div
                         className="flex justify-center items-center inset-0 fixed bg-black bg-opacity-50"
@@ -1141,13 +1121,13 @@ Valor Total: ${moeda(totalCart)} \n`;
                     className={`shadow-xl rounded-t-lg h-sc1 w-full ${fixedOn} inset-x-0 bottom-0 md:hidden`}
                     style={{ backgroundColor: colorBodyBar }}
                 >
-                    <div className="flex justify-between items-center px-6 py-4">
+                    <div className="flex justify-between items-center px-4 py-3">
                         <div
                             className=""
                             onClick={() => openModalContact()}
                         >
                             <img
-                                className="w-5 h-5"
+                                className="w-4 h-4"
                                 src={`/imgs/icons/icon-contact-white.png`}
                             />
                         </div>
@@ -1156,13 +1136,13 @@ Valor Total: ${moeda(totalCart)} \n`;
                             onClick={() => openModalCart()}
                             >
                             <img
-                                className="w-6 h-6"
+                                className="w-4 h-4"
                                 src={`/imgs/icons/icon-cart-white.png`}
                             />
                             {
                                 countListCart > 0 &&
-                                <div className="absolute bottom-2 -right-5 bg-red-500 rounded-full px-2">
-                                    <p className="text-sm text-white">{countListCart}</p>
+                                <div className="absolute bottom-2 -right-5 bg-red-500 rounded-full px-1">
+                                    <p className="text-xs text-white">{countListCart}</p>
                                 </div>
                             }
                         </div>
@@ -1171,7 +1151,7 @@ Valor Total: ${moeda(totalCart)} \n`;
                             onClick={() => topFunction()}
                         >
                             <img
-                                className="w-5 h-5"
+                                className="w-4 h-4"
                                 src={`/imgs/icons/icon-t-white.png`}
                             />
                         </div>

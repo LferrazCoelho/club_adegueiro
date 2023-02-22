@@ -52,7 +52,7 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     useEffect(() => {
         setTotalCart(itemCart.reduce((a, b) => a + b.total, 0));
         console.log("uptotalcart")
-    }, [totalCart]);
+    }, [totalCart, itemCart]);
 
     function subQuantUnd() {
         if (quantUnd === 0) {
@@ -110,10 +110,6 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
         setModalSendZap(true)
     };
 
-    function openModalTableSize() {
-        setModalTableSize(true)
-    };
-
     function openModalContact() {
         setModalContact(true)
     };
@@ -156,14 +152,6 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
         setModalSendZap(false)
     };
 
-    function closeModalTableSize() {
-        setModalTableSize(false)
-    };
-
-    function closeModalImgSelect() {
-        setModalImgSelect(false)
-    };
-
     function closeModalContact() {
         setModalContact(false)
     };
@@ -178,6 +166,7 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     };
 
     function deleteItemCart(key) {
+        // setTempListCart([...itemCart]);
         const tempListCart = [...itemCart];
         tempListCart.splice(key, 1);
         setItemCart(tempListCart);

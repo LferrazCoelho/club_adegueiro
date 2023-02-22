@@ -13,11 +13,9 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     const [modalProdut, setModalProdut] = useState(false);
     const [modalCart, setModalCart] = useState(false);
     const [modalAddCart, setModalAddCart] = useState(false);
-    const [modalTableSize, setModalTableSize] = useState(false);
     const [modalContact, setModalContact] = useState(false);
     const [modalSendZap, setModalSendZap] = useState(false);
     const [modalTanks, setModalTanks] = useState(false);
-    const [modalImgSelect, setModalImgSelect] = useState(false);
     const [fixedOn, setFixedOn] = useState("fixed");
 
     const [cardSelected, setCardSelected] = useState([]);
@@ -26,18 +24,10 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     const [typePaySend, setTypePaySend] = useState("Pix");
     const [totalCart, setTotalCart] = useState(0);
     
-    const [quantUnd, setQuantUnd] = useState(0);
-    const [radioUndOn, setRadioUndOn] = useState(false);
-    const [radioCxOn, setRadioCxOn] = useState(false);
-
-    const [nameColorSelect, setNameColorSelect] = useState("");
+    const [quantUnd, setQuantUnd] = useState(1);
 
     const [descriptOn, setDescriptOn] = useState(false);
     const [especifOn, setEspecifOn] = useState(false);
-
-    const [grupColor, setGrupColor] = useState("");
-    const [arrayColor, setArrayColor] = useState([]);
-    const [produtColor, setProdutColor] = useState([]);
 
     const [nameSend, setNameSend] = useState("");
     const [localSend, setLocalSend] = useState("");
@@ -51,21 +41,35 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
 
     useEffect(() => {
         setTotalCart(itemCart.reduce((a, b) => a + b.total, 0));
-        console.log("uptotalcart")
+        console.log("uptotalcart");
     }, [totalCart, itemCart]);
 
     function subQuantUnd() {
         if (quantUnd === 0) {
-            setQuantUnd(0)
+            setQuantUnd(0);
         } else {
-            setQuantUnd(quantUnd - 1)
+            setQuantUnd(quantUnd - 1);
         }
     }
+
     function somQuantUnd() {
-        setQuantUnd(quantUnd + 1)
+        setQuantUnd(quantUnd + 1);
+    }
+
+    function somCxOne() {
+        setQuantUnd(cardSelected.quant);
+    }
+
+    function somCxDuo() {
+        setQuantUnd(cardSelected.quant * 2);
+    }
+
+    function zerar() {
+        setQuantUnd(quantUnd * 0);
     }
 
     function openModalProdut(item) {
+        setQuantUnd(1);
         setCardSelected(item);
         setModalProdut(true);
         setFixedOn("");
@@ -73,17 +77,30 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     };
     
     function openModalCart() {
+        setModalProdut(false);
+        setModalAddCart(false);
+        setModalContact(false);
+        setModalSendZap(false);
+        setModalTanks(false);
         setTotalCart(itemCart.reduce((a, b) => a + b.total, 0));
-        // console.log(totalCart);
-        setModalCart(true)
-        setFixedOn("")
-        setTopFixed("fixed top-0")
+        setModalCart(true);
+        setFixedOn("");
+        setTopFixed("fixed top-0");
     };
+
+    function openModalTank() {
+        setModalProdut(false);
+        setModalAddCart(false);
+        setModalContact(false);
+        setModalSendZap(false);
+        setModalCart(false)
+        setModalTanks(true);
+    }
 
     function openModalAddCart() {
         
         if ( quantUnd === 0) {
-            alert("Por favor, escolha pelo menos uma opção.");
+            alert("Por favor, adicione pelo menos uma unidade.");
             setAlertInputSize("border-2 border-red-300");
             setAlertInputSizeTextOn(true);
         } else {
@@ -95,7 +112,7 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
 
     function AddCartAndSend() {
         if ( quantUnd === 0) {
-            alert("Por favor, escolha pelo menos uma opção.");
+            alert("Por favor, adicione pelo menos uma unidade.");
             setAlertInputSize("border-2 border-red-300");
             setAlertInputSizeTextOn(true);
         } else {
@@ -107,57 +124,62 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     };
 
     function openModalSendZap() {
-        setModalSendZap(true)
+        setModalSendZap(true);
     };
 
     function openModalContact() {
-        setModalContact(true)
-    };
-
-    function openModalImgSelect() {
-        setModalImgSelect(true)
-    };
-
-    function AddCartAndFixedProdut() {
-        handleAddItemCart()
-        setModalAddCart(false)
-        quantUnd(0);
+        setModalContact(true);
     };
 
     function AddCartAndExitProdut() {
-        handleAddItemCart()
-        setTopFixed("")
+        handleAddItemCart();
+        setTopFixed("");
         setQuantUnd(0);
-        setModalAddCart(false)
-        setModalProdut(false)
-        setFixedOn("fixed")
+        setModalAddCart(false);
+        setModalProdut(false);
+        setFixedOn("fixed");
+    };
+
+    function AddCartAndOpenCart() {
+        handleAddItemCart();
+        setTopFixed("");
+        setQuantUnd(0);
+        setModalAddCart(false);
+        setModalProdut(false);
+        setFixedOn("fixed");
+        openModalCart();
     };
 
     function closeModalProdut() {
-        setModalProdut(false)
-        setFixedOn("fixed")
-        setTopFixed("")
+        setModalProdut(false);
+        setFixedOn("fixed");
+        setTopFixed("");
         setQuantUnd(0);
         setAlertInputSize("border-gray-100");
         setAlertInputSizeTextOn(false);
     };
 
     function closeModalCart() {
-        setModalCart(false)
-        setFixedOn("fixed")
-        setTopFixed("")
+        setModalCart(false);
+        setFixedOn("fixed");
+        setTopFixed("");
     };
 
     function closeModalSendZap() {
-        setModalSendZap(false)
+        setModalSendZap(false);
     };
 
     function closeModalContact() {
-        setModalContact(false)
+        setModalContact(false);
     };
 
     function closeModalTanks() {
-        window.location.reload();
+        setQuantUnd(1);
+        setItemCart([]);
+        setTotalCart(0);
+        setFixedOn("fixed");
+        setTopFixed("");
+        setModalTanks(false);
     };
 
     function topFunction() {
@@ -166,7 +188,6 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     };
 
     function deleteItemCart(key) {
-        // setTempListCart([...itemCart]);
         const tempListCart = [...itemCart];
         tempListCart.splice(key, 1);
         setItemCart(tempListCart);
@@ -222,7 +243,7 @@ Total item: ${moeda(item.quantUnd * item.valueUnd)} \n`;
         idOrder = window.encodeURIComponent(idOrder);
 
         window.open("https://api.whatsapp.com/send?phone=" + numberZap + "&text=" + headOrder + bodyOrder + totalOrder + payOrder + localOrder + idOrder, "_blank");
-        setTimeout(function () { setModalTanks(true); }, 2000);
+        setTimeout( openModalTank() , 2000);
     }
 
 
@@ -307,29 +328,6 @@ Total item: ${moeda(item.quantUnd * item.valueUnd)} \n`;
                         </div>
                     </div>
                 </div>
-
-                {/* <div className="flex overflow-x-auto md:justify-center py-4 px-2 lg:overflow-x-hidden">
-                    <div className="flex flex-nowrap">
-                        <p></p>
-                        {dataProdut.map((item, key) =>
-                            item.promo === "on" &&
-                            <div className="rounded w-24 h-30 ml-3" key={key}>
-                                <img
-                                    className="rounded-lg object-cover object-top w-full h-28 md:rounded"
-                                    src={`/imgs/produts/${item.ref}.jpg`}
-                                    id="open-modal-img"
-                                    onClick={() => openModalProdut(item)}
-                                />
-                                <div className="pt-1 pb-2">
-                                    <p className="text-white text-centerx text-base font-medium border border-white rounded">
-                                        {item.valuepromo}% OFF
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div> */}
-
 
                 {/* Menu Categorias  */}
                 <div 
@@ -459,262 +457,58 @@ Total item: ${moeda(item.quantUnd * item.valueUnd)} \n`;
 
                                     <div className="mb-4 md:mb-8">
                                         <p className="text-base">Caixa com {cardSelected.quant} unidades - {cardSelected.size}</p>
-                                        {/* <p className="text-base font-bold">
-                                            
-                                            R$ {cardSelected.valueUnd} a unidade
+                                        <p className="text-base font-bold mt-1">
+                                            Total {moeda(quantUnd * cardSelected.valueUnd)}
                                         </p>
-                                        {cardSelected.promo === "on" &&
-                                            <p className="text-sm font-medium text-green-500">
-                                                {cardSelected.valuepromo}% off para pagamento a vista
-                                            </p>
-                                        } */}
                                     </div>
 
-                                    {/* <div className="md:hidden">
-                                        <div className="md:w-2/5 mb-2 border border-gray-100 rounded-md shadow">
-                                            <div
-                                                className={`flex justify-between items-center px-2 py-1 bg-gray-50`}
-                                                onClick={() => setDescriptOn(!descriptOn)}
-                                            >
-                                                   <p>Descrição</p>
-                                                <p>{descriptOn ?
-                                                        <img className="w-3 h-3" src={`/imgs/icons/icon-t.png`} />
-                                                    :
-                                                    <img className="w-3 h-3" src={`/imgs/icons/icon-b.png`} />
-                                                }</p>
-                                            </div>
-                                            <div className={`${descriptOn ? "block" : "hidden"} px-2 py-3`}>
-                                                <p>{cardSelected.descript}</p>
-                                            </div>
-                                        </div>
-                                    </div> */}
-
                                     <div className="flex-col justify-center items-center mb-2">
-                                        {/* <div className="w-full md:w-2/5 mb-4">
-                                            <select
-                                                className="h-8 px-2 w-full shadow rounded-md border border-gray-100 bg-white"
-                                                onChange={(event) => setIdColorSelect(event.target.value)}
-                                                placeholder="Cor"
-                                                id="selectColor"
-                                            >
-                                                <option className="px-2" value={cardSelected.capa}>Escolha uma Cor</option>
-                                                {produtColor.map((item, key) =>
-                                                    <option value={item.id} key={key}>{item.name}</option>
-                                                )}
-                                            </select>
-                                        </div> */}
 
                                         <div 
                                             className={`md:w-2/5 mb-2 ${(alertInputSizeTextOn) ? "mb-4" : "" }`}
                                         >
-                                            <div>
-                                                <p>Quero pedir:</p>
-                                            </div>
-                                            {/* <div 
-                                                className="flex justify-start items-center text-center mx-1"
-                                                onClick={()=> onInputCx()}
-                                            >
-                                                <input
-                                                    className={`h-6 w-6 mr-2 ${alertInputSize}`}
-                                                    type="radio"
-                                                    id="radioCx"
-                                                    name="quantBeer"
-                                                />
-                                                <div className="">
-                                                    <label className="text-base font-bold" for="radioCx">
-                                                        Caixa por {moeda(cardSelected.valueCx)}
-                                                    </label>
-                                                </div> */}
-                                                {/* <input
-                                                    className={`w-2/5 px-2 ml-4 h-8 shadow rounded-md border bg-white border-gray-400 text-center ${alertInputSize} ${alertInputSize}`}
-                                                    min="0"
-                                                    max="50"
-                                                    placeholder={sizeP}
-                                                    type="number"
-                                                    id="sizeP"
-                                                    onChange={(event) => setSizeP(event.target.value)}
-                                                /> */}
-                                            {/* </div> */}
-                                            {/* <div 
-                                                className="flex justify-start items-center text-center mx-1 py-1 mt-2"
-                                                onClick={()=> onInputUnd()}
-                                            > */}
-                                                {/* <input
-                                                    className={`h-6 w-6 mr-2 ${alertInputSize}`}
-                                                    type="radio"
-                                                    id="radioUnd"
-                                                    name="quantBeer"
-                                                />
-                                                <div className="">
-                                                    <label className="text-base font-bold" for="radioUnd">
-                                                        Unidade por {moeda(cardSelected.valueUnd)}
-                                                    </label>
-                                                </div> */}
-                                                {/* <input
-                                                    className={`w-2/5 px-2 ml-4 h-8 shadow rounded-md border bg-white border-gray-400 text-center ${alertInputSize} ${alertInputSize}`}
-                                                    min="0"
-                                                    max="50"
-                                                    placeholder={sizeP}
-                                                    type="number"
-                                                    id="sizeP"
-                                                    onChange={(event) => setSizeP(event.target.value)}
-                                                /> */}
-                                            {/* </div> */}
-                                            {/* <div className="w-1/2 text-center mx-1">
-                                                <p className="text-base font-bold">
-                                                    R$ {cardSelected.valueCx}
-                                                </p>
-                                                <p>Quant de Caixas</p>
-                                                <input
-                                                    className={`px-2 h-8 w-full shadow rounded-md border bg-white text-center ${alertInputSize}`}
-                                                    min="0"
-                                                    max="50"
-                                                    placeholder={sizeP}
-                                                    type="number"
-                                                    id="sizeP"
-                                                    onChange={(event) => setSizeP(event.target.value)}
-                                                />
-                                            </div>
-                                            <div className="w-1/2 text-center mx-1">
-                                                <p>Quant de unidades</p>
-                                                <p>Quant de unidades</p>
-                                                <input
-                                                    className={`px-2 h-8 w-full shadow rounded-md border bg-white text-center ${alertInputSize}`}
-                                                    min="0"
-                                                    max="50"
-                                                    placeholder={sizeM}
-                                                    type="number"
-                                                    id="sizeM"
-                                                    onChange={(event) => setSizeM(event.target.value)}
-                                                />
-                                            </div> */}
                                         </div>
-                                        {/* { alertInputSizeTextOn &&
-                                                <div className="w-full md:w-2/5 mb-4">
-                                                    <p className="mx-1 text-sm text-center text-red-300">digite a quantidade que deseja</p>
-                                                </div>
-                                        } */}
-                                        {/* { radioUndOn && */}
                                             <div className="flex justify-center items-center py-2">
                                                 <button
-                                                    className="h-8 w-8 mx-2 rounded-full bg-white shadow-lg border border-gray-200"
+                                                    className={`bg-blue-500 h-8 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
                                                     onClick={() => subQuantUnd()}
                                                 >
-                                                    <p className="text-gray-900 font-bold">-</p>
+                                                    <p className="text-white font-bold">-</p>
                                                 </button>
-                                                <input
-                                                    className={`text-gray-600 w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-200 ${alertInputSize}`}
-                                                    min="0"
-                                                    max="50"
-                                                    placeholder={`${quantUnd} unidades`}
-                                                    type="number"
-                                                    id="quantUnd"
-                                                    onChange={(event) => setQuantUnd(event.target.value)}
-                                                />
+                                                <div
+                                                    className={`w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-100 ${alertInputSize}`}
+                                                >
+                                                    <p className="">
+                                                        {quantUnd} unidades
+                                                    </p>
+                                                </div>
                                                 <button 
-                                                    className="h-8 w-8 mx-2 rounded-full shadow-lg border border-gray-200"
+                                                    className={`bg-blue-500 h-8 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
                                                     onClick={() => somQuantUnd()}
-                                                    >
-                                                    
-                                                    <p className="text-gray-900 font-bold">+</p>
+                                                >
+                                                    <p className="text-white font-bold">+</p>
                                                 </button>
                                             </div>
-                                         {/* } */}
-                                        {/* // { radioCxOn && 
-                                        //     <div className="flex justify-center items-center py-2">
-                                        //         <button className="h-8 w-8 mx-2 rounded-full bg-white shadow-lg border border-gray-200">
-                                        //             <p className="text-gray-900 font-bold">-</p>
-                                        //         </button>
-                                        //         <input
-                                        //             className={`w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-200 ${alertInputSize}`}
-                                        //             min="0"
-                                        //             max="50"
-                                        //             placeholder={`${quantCx} caixas`}
-                                        //             type="number"
-                                        //             id="quantCx"
-                                        //             onChange={(event) => setQuantCx(event.target.value)}
-                                        //         />
-                                        //         <button className="h-8 w-8 mx-2 rounded-full shadow-lg border border-gray-200">
-                                        //             <p className="text-gray-900 font-bold">+</p>
-                                        //         </button>
-                                        //     </div>
-                                        // }
-                                        {/* descriçao e especificaçoes mobile */}
-                                        {/* <div className="md:hidden">
-                                            <div className="md:w-2/5 mb-2 border border-gray-100 rounded-md shadow">
-                                                <div
-                                                    className={`flex justify-between items-center px-2 py-1 bg-gray-50`}
-                                                    onClick={() => setDescriptOn(!descriptOn)}
+                                            <div className="flex justify-center items-center py-2 mt-4">
+                                                <button 
+                                                    className="w-full px-2 py-1 mx-2 rounded shadow-lg border border-gray-200"
+                                                    onClick={() => somCxOne()}
                                                 >
-                                                    <p>Descrição</p>
-                                                    <p>{descriptOn ?
-                                                        <img className="w-3 h-3" src={`/imgs/icons/icon-t.png`} />
-                                                        :
-                                                        <img className="w-3 h-3" src={`/imgs/icons/icon-b.png`} />
-                                                    }</p>
-                                                </div>
-                                                <div className={`${descriptOn ? "block" : "hidden"} px-2 py-3`}>
-                                                    <p>{cardSelected.descript}</p>
-                                                </div>
-                                            </div>
-                                            <div className="md:w-2/5 mb-2 border border-gray-100 rounded-md shadow">
-                                                <div
-                                                    className={`flex justify-between items-center px-2 py-1 bg-gray-50`}
-                                                    onClick={() => setEspecifOn(!especifOn)}
+                                                    <p className="text-gray-600 text-sm">1 caixa</p>
+                                                </button>
+                                                <button 
+                                                    className="w-full px-2 py-1 mx-2 rounded shadow-lg border border-gray-200"
+                                                    onClick={() => somCxDuo()}
                                                 >
-                                                    <p>Especificações</p>
-                                                    <p>{especifOn ?
-                                                        <img className="w-3 h-3" src={`/imgs/icons/icon-t.png`} />
-                                                        :
-                                                        <img className="w-3 h-3" src={`/imgs/icons/icon-b.png`} />
-                                                    }</p>
-                                                </div>
-                                                <div className={`${especifOn ? "block" : "hidden"} px-2 py-3`}>
-                                                    <p className="text-sm">Tipo: {cardSelected.type}</p>
-                                                    <p className="text-sm">Tem bojo: {cardSelected.bojo}</p>
-                                                    <p className="text-sm">Composição: {cardSelected.composition}</p>
-                                                    <p className="text-sm">Garantia: {cardSelected.garantia}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        descriçao e especificaçoes desktop
-                                        <div className="hidden md:block">
-                                            <div className="w-full mb-2 border border-gray-100 rounded-md shadow">
-                                                <div
-                                                    className="flex justify-between items-center px-2 py-1 bg-gray-50"
+                                                    <p className="text-gray-600 text-sm">2 caixas</p>
+                                                </button>
+                                                <button 
+                                                    className="w-full px-2 py-1 mx-2 rounded shadow-lg border border-gray-200"
+                                                    onClick={() => zerar()}
                                                 >
-                                                    <p>Descrição</p>
-                                                </div>
-                                                <div className="px-2 py-2">
-                                                    <p className="text-sm">{cardSelected.descript}</p>
-                                                </div>
+                                                    <p className="text-gray-600 text-sm">zerar</p>
+                                                </button>
                                             </div>
-                                            <div className="w-full mb-2 border border-gray-100 rounded-md shadow">
-                                                <div
-                                                    className="flex justify-between items-center px-2 py-1 bg-gray-50"
-                                                >
-                                                    <p>Especificações</p>
-                                                </div>
-                                                <div className="px-2 py-2">
-                                                    <p className="text-sm">Tipo: {cardSelected.type}</p>
-                                                    <p className="text-sm">Tem bojo: {cardSelected.bojo}</p>
-                                                    <p className="text-sm">Composição: {cardSelected.composition}</p>
-                                                    <p className="text-sm">Garantia: {cardSelected.garantia}</p>
-                                                </div>
-                                            </div>
-                                        </div> */}
-
-                                        {/* <div className="md:w-2/5 mb-28 md:mb-4">
-                                            <button
-                                                className="w-full border-2 border-gray-500 px-1 py-1 rounded-md text-sm mr-2"
-                                                // onClick={() => openModalTableSize()}
-                                                onClick={() => alert("Em breve tabela de medidas")}
-                                            >
-                                                Tabela de medidas
-                                            </button>
-                                        </div> */}
-
                                     </div>
                                 </div>
 
@@ -745,12 +539,6 @@ Total item: ${moeda(item.quantUnd * item.valueUnd)} \n`;
                                         >
                                             Adicionar carrinho
                                         </button>
-                                        {/* <button
-                                            className="w-full bg-green-500 px-2 py-3 rounded-md text-sm text-white"
-                                            onClick={() => AddCartAndSend()}
-                                        >
-                                            Finalizar pedido
-                                        </button> */}
                                     </div>
                                 </div>
                             </div>
@@ -885,7 +673,7 @@ Total item: ${moeda(item.quantUnd * item.valueUnd)} \n`;
                                     </button>
                                     <button
                                         className="w-full bg-green-500 px-2 py-2 rounded-md text-sm text-white"
-                                        onClick={() => AddCartAndSend()}
+                                        onClick={() => AddCartAndOpenCart()}
                                     >
                                         Finalizar pedido
                                     </button>
@@ -1053,15 +841,30 @@ Total item: ${moeda(item.quantUnd * item.valueUnd)} \n`;
                                         src={`/imgs/icons/icon-tanks.png`}
                                     />
                                     <p>
-                                        Obrigado por nos escolher!
+                                        Pedido enviado!
+                                    </p>
+                                    <p>
+                                        
                                     </p>
                                 </div>
                                 <div className="">
                                     <button
-                                        className="w-full bg-blue-500 px-2 py-2 rounded-md text-sm text-white"
+                                        className="w-full bg-pink-500 px-2 py-2 mx-1 my-1 rounded-md text-sm text-white"
+                                        onClick={() => parent.location='https://www.instagram.com/sou_adegueiro/'}
+                                    >
+                                        Visitar nosso Instagram 
+                                    </button>
+                                    <button
+                                        className="w-full bg-green-500 px-2 py-2 mx-1 my-1 rounded-md text-sm text-white"
+                                        onClick={() => parent.location='https://wa.me/5561999186122/'}
+                                    >
+                                         Atendimento pelo Whatsapp
+                                    </button>
+                                    <button
+                                        className="w-full bg-blue-500 px-2 py-2 mx-1 my-1 rounded-md text-sm text-white"
                                         onClick={() => closeModalTanks()}
                                     >
-                                        volte sempre
+                                        Voltar para o site
                                     </button>
                                 </div>
                             </div>

@@ -124,6 +124,7 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     };
 
     function openModalSendZap() {
+        setModalCart(false);
         setModalSendZap(true);
     };
 
@@ -222,27 +223,25 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     
     function sendZap() {
         // var headOrder = `Novo pedido Nº${Math.floor(Math.random() * 65536)} - ${nameOrder} \n`;
-        var headOrder = `Olá, meu nome é ${nameSend}, gostaria de fazer o seguinte pedido:`;
+        var headOrder = `Olá, meu nome é ${nameSend}, gostaria de fazer o seguinte pedido: \n`;
         var bodyOrder = itemCart.map(function (item) {
             return `
-\n${item.produt} - ${item.type} ${item.size}
-${(item.quantUnd !== 0) ? `Unidades: ${item.quantUnd}` : ""}
-Total item: ${moeda(item.quantUnd * item.valueUnd)} \n`;
-        });
-        // var totalOrder = ``;
-        var totalOrder = `\nValor total do pedido: ${moeda(totalCart)}\n`;
-        var payOrder = `Forma de pagamento: ${typePaySend}\n`;
-        var localOrder = `Endereço da entrega: ${localSend}\n`;
+${item.produt} - ${item.type} ${item.size}
+${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
+`});
+        var payOrder = `\nPagamento: ${typePaySend}\n`;
+        var localOrder = `Endereço da entrega:\n${localSend}\n`;
         var idOrder = `\nPedido Nº${Math.floor(Math.random() * 65536)}`;
 
         headOrder = window.encodeURIComponent(headOrder);
         bodyOrder = window.encodeURIComponent(bodyOrder);
-        totalOrder = window.encodeURIComponent(totalOrder);
         payOrder = window.encodeURIComponent(payOrder);
         localOrder = window.encodeURIComponent(localOrder);
         idOrder = window.encodeURIComponent(idOrder);
 
-        window.open("https://api.whatsapp.com/send?phone=" + numberZap + "&text=" + headOrder + bodyOrder + totalOrder + payOrder + localOrder + idOrder, "_blank");
+        window.open("https://api.whatsapp.com/send?phone=" 
+        + numberZap + "&text=" + headOrder + bodyOrder + payOrder + localOrder + idOrder,
+         "_blank");
         setTimeout( openModalTank() , 2000);
     }
 

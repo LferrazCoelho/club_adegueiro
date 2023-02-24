@@ -25,13 +25,17 @@ export async function getServerSideProps() {
 
     const listCategory = [
         {value: "cerveja", name: "Cervejas"},
-        {value: "whisky", name: "Whiskys"},
-        {value: "vodka", name: "Vodkas"},
-        {value: "gin", name: "Gins"},
-        {value: "cigarros", name: "Tabacos"},
+        {value: "destilado", name: "Destiladas"},
+        {value: "vinho", name: "Vinhos"},
         {value: "refrigerante", name: "Refrigerantes"},
         {value: "suco", name: "Sucos"},
-        {value: "diversos", name: "Diversos"}
+        {value: "agua", name: "Agua"},
+        {value: "cigarros", name: "Tabacos"},
+        {value: "salgado", name: "Salgados"},
+        // {value: "whisky", name: "Whiskys"},
+        // {value: "vodka", name: "Vodkas"},
+        // {value: "gin", name: "Gins"},
+        // {value: "diversos", name: "Diversos"}
     ]
 
     return {

@@ -261,14 +261,14 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                 {/* Head Mobile */}
                 <div className="md:hidden">
                     <div 
-                        className="flex justify-center items-center py-6 shadow-md" 
+                        className="flex justify-center items-center py-2 shadow-md" 
                         // style={{ backgroundImage: url("/bg-01.gif") }}
                         // style={{ backgroundImage: `url(${BgHeadImg})` }}
                         style={{ backgroundColor: colorHead }}
                         >
                         <div className="flex justify-center items-center w-2/5">
                             <img
-                                className="object-cover h-32"
+                                className="object-cover h-28"
                                 src={`/imgs/${logo}.png`}
                             />
                         </div>
@@ -280,9 +280,9 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             <div className="flex items-center">
                                 <p className="text-white pr-2">Loja está</p>
                                 {( infoBD.operation === "on" ) ? 
-                                    <button className="bg-green-500 text-white px-2 py-1 rounded-lg">aberta</button>
+                                    <button className="bg-green-500 text-white px-2 rounded-lg">aberta</button>
                                     :  
-                                    <button className="bg-red-500 text-white px-2 py-1 rounded"> fechada </button>
+                                    <button className="bg-red-500 text-white px-2 rounded-lg"> fechada </button>
                                 }
                             </div>
                         </div>
@@ -356,10 +356,11 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                     className=" md:grid-cols-1"
                                     onClick={() => openModalProdut(item)}
                                 >
-                                    <div className="">
+                                    <div className="rounded-lg">
                                         <img
-                                            className="rounded-t-lg object-cover object-center h-44 md:rounded md:w-full md:h-96"
-                                            src={`/imgs/produts/${item.ref}.png`}
+                                            className="rounded-t-lg object-cover object-center h-36 md:rounded md:w-full md:h-96"
+                                            src={`/imgs/produts/cerv.png`}
+                                            // src={`/imgs/produts/${item.ref}.png`}
                                             id="open-modal-img"
                                             onClick={() => openModalProdut(item)}
                                         />
@@ -367,42 +368,26 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                     <div className="py-1">
                                         <div className="w-full px-2 pb-2 pt-1"
                                             onClick={() => openModalProdut(item)}>
-                                            <h3 className="text-lg font-bold md:text-base text-gray-900">
+                                            <h3 className="text-sm font-bold md:text-base text-gray-900">
                                                 {item.produt}
                                             </h3>
-                                            <p className="text-base text-gray-900">
+                                            <p className="text-sm text-gray-900">
                                                 {item.type} - {item.size}
                                             </p>
                                         </div>
                                         
-                                        { (item.category === "cerveja")? 
-                                            <div className="w-full flex items-center">
-                                                <div className="w-full px-1 py-1 bg-green-600 mb-1">
+                                        {/* { (item.category === "cerveja")?  */}
+                                            <div className="flex w-full justify-between items-center px-3">
+                                                <p className="text-base font-bold text-gray-900">
+                                                    {moeda(item.valueUnd * 1)}
+                                                </p>
+                                                <div className="w-6 h-6 bg-gray-800 rounded-full mb-1">
                                                     <p className="text-sm font-bold text-center text-white">
-                                                        {moeda(item.valueUnd * 1)} a unidade
-                                                    </p>
-                                                </div>
-                                                {/* <div className="p-1 ml-1">
-                                                    <p className="text-base" style={{ color: colorTitle }}>
-                                                        {moeda(item.valueUnd * 1)}
-                                                    </p>
-                                                    <p className="text-sm" style={{ color: colorTitle }}>
-                                                        a unidade
-                                                    </p>
-                                                </div> */}
-                                            </div>
-                                            :
-                                            <div className="w-full">
-                                                <div className="flex items-center px-2 pb-1">
-                                                    <p className="text-lg text-white">
-                                                        R$ {item.valueUnd}
-                                                    </p>
-                                                    <p className="ml-1 text-base text-white">
-                                                        a und
+                                                        +
                                                     </p>
                                                 </div>
                                             </div>
-                                        }
+                                        {/* } */}
 
                                     </div>
                                 </div>
@@ -429,7 +414,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                     <div
                         className="flex justify-center items-center inset-0 fixed bg-white"
                     >
-                        <div className="w-screen h-screen pt-8 md:pt-0 md:flex md:w-full relative overflow-y-auto md:overflow-hidden">
+                        <div className="w-screen h-screen md:flex md:w-full relative overflow-y-auto md:overflow-hidden">
                             {/* IMG Desktop */}
                             <div className="p-0 m-0 hidden md:block h-auto w-2/5">
                                 <img
@@ -440,12 +425,14 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             {/* IMG Mobile */}
                             <div className="flex justify-center items-center md:hidden bg-white">
                                 <img
-                                    className="h-44 md:h-auto md:w-2/5 object-cover object-center mb-8"
-                                    src={`/imgs/produts/${cardSelected.ref}.png`}
+                                    className="w-full md:h-auto object-cover object-center"
+                                    src={`/imgs/produts/cerv.png`}
+                                    // className="h-44 md:h-auto md:w-2/5 object-cover object-center mb-8"
+                                    // src={`/imgs/produts/${cardSelected.ref}.png`}
                                     onClick={() => openModalImgSelect()}
                                 />
                             </div>
-                            <hr />
+                            {/* <hr /> */}
                             <div className="py-2 md:w-3/5 md:overflow-y-auto">
                                 <div className="px-4 mt-3 mb-4 h-auto md:h-auto md:pt-8 md:px-8">
                                     <div className="flex items-center">
@@ -469,7 +456,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                         </div>
                                             <div className="flex justify-center items-center py-2">
                                                 <button
-                                                    className={`bg-blue-500 h-8 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
+                                                    className={`bg-gray-800 h-8 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
                                                     onClick={() => subQuantUnd()}
                                                 >
                                                     <p className="text-white font-bold">-</p>
@@ -482,7 +469,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                                     </p>
                                                 </div>
                                                 <button 
-                                                    className={`bg-blue-500 h-8 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
+                                                    className={`bg-gray-800 h-8 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
                                                     onClick={() => somQuantUnd()}
                                                 >
                                                     <p className="text-white font-bold">+</p>
@@ -544,7 +531,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             {/* Exit desktop */}
                             <div className="hidden md:block">
                                 <button
-                                    className="bg-gray-600 text-white absolute top-2 right-2 w-8 h-8 rounded-full text-sm"
+                                    className="bg-white text-gray-800 absolute top-2 right-2 w-8 h-8 rounded-full text-sm"
                                     type="button"
                                     onClick={closeModalProdut}
                                 >x</button>
@@ -553,7 +540,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                         {/* Exit mobile */}
                         <div className="md:hidden">
                             <button
-                                className="bg-gray-600 text-white absolute top-2 right-2 w-8 h-8 rounded-full text-sm fixed"
+                                className="bg-white text-gray-800 absolute top-2 right-2 w-8 h-8 rounded-full text-sm fixed"
                                 type="button"
                                 onClick={closeModalProdut}
                             >x</button>
@@ -584,7 +571,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             :
                             <div className="bg-white w-5/6 lg:w-1/3 rounded-xl shadow-md relative px-2">
                                 <div className="flex justify-center items-center py-2">
-                                    <strong>Items do Carrinho</strong>
+                                    <strong>Itens do Carrinho</strong>
                                 </div>
                                 <div className="h-96 overflow-y-auto">
                                     {itemCart.map((item, key) =>
@@ -592,23 +579,23 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                             <div className="w-2/6 ml-1">
                                                 <img
                                                     className="w-full h-auto rounded-xl object-cover object-top"
-                                                    src={`/imgs/produts/${item.ref}.png`}
+                                                    src={`/imgs/produts/cerv.png`}
+                                                    // src={`/imgs/produts/${item.ref}.png`}
                                                 />
                                             </div>
                                             <div className="w-3/6 ml-1 px-1 py-2">
                                                 <div className="">
                                                     <p className="text-gray-900 text-base">{item.produt}</p>
-                                                    <p className="text-gray-600 text-sm">{item.type} - {item.size}</p>
-
+                                                    <p className="text-gray-600 text-sm">{item.quantUnd}x {item.size}</p>
                                                 </div>
-                                                {item.quantUnd !== 0 &&
+                                                {/* {item.quantUnd !== 0 &&
                                                     <div className="flex">
                                                         <p className="text-gray-600 text-sm">Unidade: </p>
                                                         <p className="font-medium ml-2 text-sm uppercase">
                                                             {item.quantUnd}
                                                         </p>
                                                     </div>
-                                                }
+                                                } */}
                                                 <div className="">
                                                     <p className="text-gray-600 text-sm">Valor total: </p>
                                                     <p className="font-medium uppercase">
@@ -631,7 +618,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                         Total do carrinho: {moeda(totalCart)}
                                     </p>
                                     <button
-                                        className="w-full bg-blue-500 px-2 py-2 rounded-md text-sm text-white"
+                                        className="w-full bg-green-500 px-2 py-2 rounded-md text-sm text-white"
                                         onClick={() => openModalSendZap()}
                                     >
                                         Finalizar pedido
@@ -665,7 +652,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                 </div>
                                 <div className="">
                                     <button
-                                        className="w-full bg-blue-500 px-2 py-2 rounded-md text-sm text-white mb-2"
+                                        className="w-full bg-gray-800 px-2 py-2 rounded-md text-sm text-white mb-2"
                                         onClick={() => AddCartAndExitProdut()}
                                     >
                                         Ver outros produtos
@@ -927,7 +914,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             onClick={() => openModalCart()}
                             >
                             <img
-                                className="w-4 h-4"
+                                className="w-5 h-5"
                                 src={`/imgs/icons/icon-cart-white.png`}
                             />
                             {

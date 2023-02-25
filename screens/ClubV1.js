@@ -380,8 +380,8 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                     <div className="rounded-lg">
                                         <img
                                             className="rounded-t-lg object-cover object-center h-36 md:rounded md:w-full md:h-96"
-                                            src={`/imgs/produts/cerv.png`}
-                                            // src={`/imgs/produts/${item.ref}.png`}
+                                            src={`/imgs/produts/${item.ref}.png`}
+                                            // src={`/imgs/produts/cerv.png`}
                                             id="open-modal-img"
                                             onClick={() => openModalProdut(item)}
                                         />
@@ -447,13 +447,9 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             <div className="flex justify-center items-center md:hidden bg-white">
                                 <img
                                     className="w-full md:h-auto object-cover object-center"
-                                    src={`/imgs/produts/cerv.png`}
-                                    // className="h-44 md:h-auto md:w-2/5 object-cover object-center mb-8"
-                                    // src={`/imgs/produts/${cardSelected.ref}.png`}
-                                    onClick={() => openModalImgSelect()}
+                                    src={`/imgs/produts/${cardSelected.ref}.png`}
                                 />
                             </div>
-                            {/* <hr /> */}
                             <div className="py-2 md:w-3/5 md:overflow-y-auto">
                                 <div className="px-4 mt-3 mb-4 h-auto md:h-auto md:pt-8 md:px-8">
                                     <div className="flex items-center">

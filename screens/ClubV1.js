@@ -45,8 +45,8 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     }, [totalCart, itemCart]);
 
     function subQuantUnd() {
-        if (quantUnd === 0) {
-            setQuantUnd(0);
+        if (quantUnd === 1) {
+            setQuantUnd(1);
         } else {
             setQuantUnd(quantUnd - 1);
         }
@@ -57,15 +57,17 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     }
 
     function somCxOne() {
-        setQuantUnd(cardSelected.quant);
+        var cx = cardSelected.quant;
+        setQuantUnd(cx * 1);
     }
 
     function somCxDuo() {
-        setQuantUnd(cardSelected.quant * 2);
+        var cx = cardSelected.quant;
+        setQuantUnd(cx * 2);
     }
 
-    function zerar() {
-        setQuantUnd(quantUnd * 0);
+    function oneQuant() {
+        setQuantUnd(1);
     }
 
     function openModalProdut(item) {
@@ -274,15 +276,34 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                         </div>
                         <div className="w-3/5 p-1">
                             <p className="text-yellow-500 text-base font-bold pb-1">Distribuidora de Bebidas</p>
-                            <p className="text-white text-sm">QE 15 Conjunto M, Bloco A</p>
-                            <p className="text-white text-sm pb-1">Guara 2</p>
+                            {/* <p className="text-white text-sm">QE 15 Conjunto M, Bloco A</p>
+                            <p className="text-white text-sm pb-1">Guara 2</p> */}
                             {/* <p className="text-yellow-500 text-base font-bold pb-1">Faça seu pedido</p> */}
-                            <div className="flex items-center">
-                                <p className="text-white pr-2">Loja está</p>
-                                {( infoBD.operation === "on" ) ? 
-                                    <button className="bg-green-500 text-white px-2 rounded-lg">aberta</button>
+                            <div className="flex-col items-center">
+                                {( infoBD.operation === "on" ) ?
+                                    <>
+                                        <div className="flex items-center">
+                                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                            <p className="text-white text-sm pl-2">Loja aberta</p>
+                                        </div>
+                                        <div className="flex">
+                                            <p className="text-white text-sm">Entrega em até 30min</p>
+                                            <img
+                                                className="h-5 pl-2"
+                                                src={`/imgs/icons/icon-time.png`}
+                                            />
+                                        </div>
+                                    </>
                                     :  
-                                    <button className="bg-red-500 text-white px-2 rounded-lg"> fechada </button>
+                                    <>
+                                        <div className="flex items-center">
+                                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                                            <p className="text-white text-sm pl-2">Loja fechada</p>
+                                        </div>
+                                        <div className="flex">
+                                            <p className="text-white text-sm">Entrega amanhã a partir das 10:00hs</p>
+                                        </div>
+                                    </>
                                 }
                             </div>
                         </div>
@@ -359,8 +380,8 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                     <div className="rounded-lg">
                                         <img
                                             className="rounded-t-lg object-cover object-center h-36 md:rounded md:w-full md:h-96"
-                                            src={`/imgs/produts/cerv.png`}
-                                            // src={`/imgs/produts/${item.ref}.png`}
+                                            src={`/imgs/produts/${item.ref}.png`}
+                                            // src={`/imgs/produts/cerv.png`}
                                             id="open-modal-img"
                                             onClick={() => openModalProdut(item)}
                                         />
@@ -426,13 +447,9 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             <div className="flex justify-center items-center md:hidden bg-white">
                                 <img
                                     className="w-full md:h-auto object-cover object-center"
-                                    src={`/imgs/produts/cerv.png`}
-                                    // className="h-44 md:h-auto md:w-2/5 object-cover object-center mb-8"
-                                    // src={`/imgs/produts/${cardSelected.ref}.png`}
-                                    onClick={() => openModalImgSelect()}
+                                    src={`/imgs/produts/${cardSelected.ref}.png`}
                                 />
                             </div>
-                            {/* <hr /> */}
                             <div className="py-2 md:w-3/5 md:overflow-y-auto">
                                 <div className="px-4 mt-3 mb-4 h-auto md:h-auto md:pt-8 md:px-8">
                                     <div className="flex items-center">
@@ -490,9 +507,9 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                                 </button>
                                                 <button 
                                                     className="w-full px-2 py-1 mx-2 rounded shadow-lg border border-gray-200"
-                                                    onClick={() => zerar()}
+                                                    onClick={() => oneQuant()}
                                                 >
-                                                    <p className="text-gray-600 text-sm">zerar</p>
+                                                    <p className="text-gray-600 text-sm">1 unidade</p>
                                                 </button>
                                             </div>
                                     </div>
@@ -560,18 +577,24 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                         className="w-16 h-16 mx-2 mb-2"
                                         src={`/imgs/icons/icon-zero-item.png`}
                                     />
-                                    <p>Sem items no carrinho</p>
+                                    <p className="text-base mb-2">Seu barril está vazio</p>
+                                    <button
+                                        className="w-3/5 bg-green-500 px-2 py-2 rounded-md text-sm text-white"
+                                        onClick={closeModalCart} 
+                                    >
+                                        adicionar bebidas
+                                    </button>
                                 </div>
-                                <button
+                                {/* <button
                                     className="bg-gray-400 text-white absolute top-3 right-3 w-6 h-6 rounded-full text-sm"
                                     type="button"
                                     onClick={closeModalCart}
-                                >x</button>
+                                >x</button> */}
                             </div>
                             :
                             <div className="bg-white w-5/6 lg:w-1/3 rounded-xl shadow-md relative px-2">
                                 <div className="flex justify-center items-center py-2">
-                                    <strong>Itens do Carrinho</strong>
+                                    <strong>Itens do Barril</strong>
                                 </div>
                                 <div className="h-96 overflow-y-auto">
                                     {itemCart.map((item, key) =>
@@ -614,8 +637,8 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                     )}
                                 </div>
                                 <div className="flex-col justify-center items-center py-2">
-                                    <p className="text-center pb-1">
-                                        Total do carrinho: {moeda(totalCart)}
+                                    <p className="text-center pb-2">
+                                        Total do Barril: {moeda(totalCart)}
                                     </p>
                                     <button
                                         className="w-full bg-green-500 px-2 py-2 rounded-md text-sm text-white"
@@ -694,43 +717,16 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                         <p className="">Whatsapp</p>
                                     </div>
 
-                                    {/* <div
+                                    <div
                                         className="flex items-center w-full py-2 px-4 bg-white border rounded-md shadow-md mb-4"
                                         onClick={() => window.open(`tel:${numberZap}`)}
                                     >
                                         <img
                                             className="w-10 h-10 mr-4"
-                                            src={`/links/${pastaLogo}/phone.png`}
+                                            src={`/imgs/icons/phone.png`}
                                         />
                                         <p className="">Ligação</p>
-                                    </div> */}
-
-                                    { !atacado ? 
-                                        <div
-                                            className="flex items-center w-full py-2 px-4 bg-white border rounded-md shadow-md"
-
-                                            onClick={() => alert("em breve LIEVI Fitness Varejo no Instagram")}
-                                            
-                                        >
-                                            <img
-                                                className="w-10 h-10 mr-4"
-                                                src={`/imgs/icons/instagram.png`}
-                                            />
-                                            <p className="">Instagram</p>
-                                        </div>
-                                        :
-                                        <div
-                                            className="flex items-center w-full py-2 px-4 bg-white border rounded-md shadow-md"
-
-                                            onClick={() => window.open("https://www.instagram.com/lievifitness/")}                                            
-                                        >
-                                            <img
-                                                className="w-10 h-10 mr-4"
-                                                src={`/imgs/icons/instagram.png`}
-                                            />
-                                            <p className="">Instagram</p>
-                                        </div>
-                                    }
+                                    </div>
                                 </div>
                             </div>
                             <button
@@ -758,25 +754,25 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                     />
                                 </div>
                                 <div className="">
-                                    <p className="text-sm">
+                                    <p className="text-base">
                                         Nome
                                     </p>
                                     <input
-                                        className="px-2 py-2 mb-2 w-full shadow rounded-md border border-gray-100 text-center bg-white"
+                                        className="px-2 py-2 mb-3 w-full shadow rounded-md border border-gray-100 text-center bg-white"
                                         placeholder="Digite seu nome ou apelido"
                                         type="text"
                                         onChange={(event) => setNameSend(event.target.value)}
                                     />
-                                    <p className="text-sm">
+                                    <p className="text-base">
                                         Endereço
                                     </p>
                                     <input
-                                        className="px-2 py-2 mb-2 w-full shadow rounded-md border border-gray-100 text-center bg-white"
+                                        className="px-2 py-2 mb-3 w-full shadow rounded-md border border-gray-100 text-center bg-white"
                                         placeholder="Digite seu endereço completo"
                                         type="text"
                                         onChange={(event) => setLocalSend(event.target.value)}
                                     />
-                                    <p className="text-sm">
+                                    <p className="text-base">
                                         Forma de Pagamento
                                     </p>
                                     {/* <input
@@ -905,8 +901,8 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             onClick={() => openModalContact()}
                         >
                             <img
-                                className="w-4 h-4"
-                                src={`/imgs/icons/icon-contact-white.png`}
+                                className="w-5 h-5"
+                                src={`/imgs/icons/icon-contact.png`}
                             />
                         </div>
                         <div
@@ -919,7 +915,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             />
                             {
                                 countListCart > 0 &&
-                                <div className="absolute bottom-2 -right-5 bg-red-500 rounded-full px-1">
+                                <div className="absolute bottom-2 -right-5 bg-red-500 rounded-full px-2">
                                     <p className="text-xs text-white">{countListCart}</p>
                                 </div>
                             }
@@ -929,7 +925,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             onClick={() => topFunction()}
                         >
                             <img
-                                className="w-4 h-4"
+                                className="w-5 h-5"
                                 src={`/imgs/icons/icon-t-white.png`}
                             />
                         </div>

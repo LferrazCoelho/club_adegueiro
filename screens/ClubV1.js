@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Script from 'next/script'
 import React, { useState, useEffect } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -252,8 +253,17 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
         <>
             <Head>
                 <title>{titlePage}</title>
-                <link rel="icon" src={`/imgs/${logo}.png`} />
+                <link rel="icon" src={`/imgs/logo-white.png`} />
             </Head>
+            <Script id="google-tag-manager" strategy="afterInteractive">
+                {`
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-W9KXLSN');
+                `}
+            </Script>
 
             <div 
                 className={`${topFixed} min-h-screen bg-gray-50`} 

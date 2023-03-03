@@ -14,8 +14,8 @@ export default async function(req, res) {
 
     const sheetAvalit = doc.sheetsByIndex[2];
     const rowsAvalit = await sheetAvalit.getRows();
-    const dataSheetsAvalit = rowsAvalit.map(({ value, name  }) => {
-        return { value, name  };
+    const dataSheetsAvalit = rowsAvalit.map(({ name, star, avalit  }) => {
+        return { name, star, avalit  };
     })
     
     res.send({

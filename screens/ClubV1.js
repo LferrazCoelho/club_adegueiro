@@ -3,11 +3,13 @@ import Script from 'next/script'
 import React, { useState, useEffect } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-function ClubV1({ gtm, listProduts, listOperation, listCategory, listAvalit, logo, numberZap, titlePage, 
-    colorHead, colorBody, colorBodyItem, colorBodyBar, colorTitle, colorText, colorButton, atacado }) {
+function ClubV1({ listProduts, listOperation, listCategory, listAvalit, logo, numberZap, titlePage, 
+    colorHead, colorBody, colorBodyBar }) {
 
     const [dataProdut, setDataProdut] = useState(listProduts);
     const [dataOperation, setDbOperation] = useState(listOperation);
+    const [dataCategory, setDbCategory] = useState(listCategory);
+    const [dataAvalit, setDbAvalit] = useState(listAvalit);
     const [filterProdut, setFilterProdut] = useState("cerveja");
     const [infoBD, setInfoBD] = useState(dataOperation.dataSheetsOperation[0]);
 
@@ -321,7 +323,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                                 src={`/imgs/icons/avalit.png`}
                                             />
                                             <p  className="text-base text-white pl-2">
-                                                {listAvalit.length} avaliações
+                                                {dataAvalit.length} avaliações
                                             </p>
                                         </div>
                                     </>
@@ -340,7 +342,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                                 src={`/imgs/icons/avalit.png`}
                                             />
                                             <p  className="text-base text-white pl-2">
-                                                {listAvalit.length} avaliações
+                                                {dataAvalit.length} avaliações
                                             </p>
                                         </div>
                                     </>
@@ -395,7 +397,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                     style={{ backgroundColor: colorHead }}
                     >
                     <div className="flex justify-center items-center flex-nowrap">
-                        {listCategory.map((item, key) =>
+                        {dataCategory.map((item, key) =>
                             <p key={key}
                                 className={`mx-2 text-sm text-white ${filterProdut === item.value && "text-base border border-white rounded-lg px-2 py-1"}`} onClick={() => setFilterProdut(item.value)}
                                 id="btn-menu"
@@ -794,7 +796,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                         <div className="w-full lg:w-1/3 rounded-xl shadow-md relative">
                             <div className="px-4 py-12">
                                 <div className="flex flex-col items-center px-8 h-96 overflow-y-auto">
-                                    {listAvalit.map((item, key) =>
+                                    {dataAvalit.map((item, key) =>
                                         <div className="flex-col items-center w-full py-2 px-4 bg-white border rounded-md shadow-md mb-4" key={key}>
                                             <div className="flex items-center">
                                                 <div className="flex items-center justify-center bg-gray-900 h-8 w-8 rounded-full">

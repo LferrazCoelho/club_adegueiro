@@ -12,13 +12,13 @@ export default async function(req, res) {
     
     await doc.loadInfo();
 
-    const sheetOperation = doc.sheetsByIndex[3];
-    const rowsOperation = await sheetOperation.getRows();
-    const dataSheetsOperation = rowsOperation.map(({ operation, valueOperation  }) => {
-        return { operation, valueOperation  };
+    const sheetAvalit = doc.sheetsByIndex[2];
+    const rowsAvalit = await sheetAvalit.getRows();
+    const dataSheetsAvalit = rowsAvalit.map(({ value, name  }) => {
+        return { value, name  };
     })
     
     res.send({
-        dataSheetsOperation
+        dataSheetsAvalit
     })
 }

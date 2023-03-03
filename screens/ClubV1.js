@@ -3,7 +3,7 @@ import Script from 'next/script'
 import React, { useState, useEffect } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap, titlePage, 
+function ClubV1({ gtm, listProduts, listOperation, listCategory, listAvalit, logo, numberZap, titlePage, 
     colorHead, colorBody, colorBodyItem, colorBodyBar, colorTitle, colorText, colorButton, atacado }) {
 
     const [dataProdut, setDataProdut] = useState(listProduts);
@@ -15,6 +15,7 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
     const [modalCart, setModalCart] = useState(false);
     const [modalAddCart, setModalAddCart] = useState(false);
     const [modalContact, setModalContact] = useState(false);
+    const [modalAvalit, setModalAvalit] = useState(false);
     const [modalSendZap, setModalSendZap] = useState(false);
     const [modalTanks, setModalTanks] = useState(false);
     const [fixedOn, setFixedOn] = useState("fixed");
@@ -75,8 +76,7 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
         setQuantUnd(1);
         setCardSelected(item);
         setModalProdut(true);
-        setFixedOn("");
-        setTopFixed("fixed top-0");
+        setFixedOn("hidden");
     };
     
     function openModalCart() {
@@ -87,8 +87,7 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
         setModalTanks(false);
         setTotalCart(itemCart.reduce((a, b) => a + b.total, 0));
         setModalCart(true);
-        setFixedOn("");
-        setTopFixed("fixed top-0");
+        setFixedOn("hidden");
     };
 
     function openModalTank() {
@@ -135,6 +134,10 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
         setModalContact(true);
     };
 
+    function openModalAvalit() {
+        setModalAvalit(true);
+    };
+
     function AddCartAndExitProdut() {
         handleAddItemCart();
         setTopFixed("");
@@ -171,10 +174,16 @@ function ClubV1({ gtm, listProduts, listOperation, listCategory, logo, numberZap
 
     function closeModalSendZap() {
         setModalSendZap(false);
+        setFixedOn("fixed");
+        setTopFixed("");
     };
 
     function closeModalContact() {
         setModalContact(false);
+    };
+
+    function closeModalAvalit() {
+        setModalAvalit(false);
     };
 
     function closeModalTanks() {
@@ -292,26 +301,47 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             <div className="flex-col items-center">
                                 {( infoBD.operation === "on" ) ?
                                     <>
-                                        <div className="flex items-center">
-                                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                            <p className="text-white text-sm pl-2">Loja aberta</p>
+                                        <div className="flex items-center mb-1">
+                                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                            <p className="text-white text-sm pl-3">Loja aberta</p>
                                         </div>
                                         <div className="flex">
-                                            <p className="text-white text-sm">Entrega em até 30min</p>
                                             <img
-                                                className="h-5 pl-2"
+                                                className="h-4"
                                                 src={`/imgs/icons/icon-time.png`}
                                             />
+                                            <p className="pl-2 text-white text-sm">Entrega em até 30min</p>
+                                        </div>
+                                        <div 
+                                            className="flex items-center"
+                                            onClick={() => openModalAvalit()}
+                                        >
+                                            <img
+                                                className="h-4"
+                                                src={`/imgs/icons/avalit.png`}
+                                            />
+                                            <p  className="text-base text-white pl-2">
+                                                {listAvalit.length} avaliações
+                                            </p>
                                         </div>
                                     </>
                                     :  
                                     <>
-                                        <div className="flex items-center">
+                                        <div className="flex items-center mb-1">
                                             <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                                             <p className="text-white text-sm pl-2">Loja fechada</p>
                                         </div>
                                         <div className="flex">
                                             <p className="text-white text-sm">Entrega amanhã a partir das 10:00hs</p>
+                                        </div>
+                                        <div className="flex items-center">
+                                            <img
+                                                className="h-4"
+                                                src={`/imgs/icons/avalit.png`}
+                                            />
+                                            <p  className="text-base text-white pl-2">
+                                                {listAvalit.length} avaliações
+                                            </p>
                                         </div>
                                     </>
                                 }
@@ -367,7 +397,9 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                     <div className="flex justify-center items-center flex-nowrap">
                         {listCategory.map((item, key) =>
                             <p key={key}
-                                className={`mx-2 text-sm text-white ${filterProdut === item.value && "text-base border border-white rounded-lg px-2 py-1"}`} onClick={() => setFilterProdut(item.value)}>
+                                className={`mx-2 text-sm text-white ${filterProdut === item.value && "text-base border border-white rounded-lg px-2 py-1"}`} onClick={() => setFilterProdut(item.value)}
+                                id="btn-menu"
+                            >
                                 {item.name}
                             </p>
                         )}
@@ -385,6 +417,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             >
                                 <div 
                                     className=" md:grid-cols-1"
+                                    id="open-modalProdut-div"
                                     onClick={() => openModalProdut(item)}
                                 >
                                     <div className="rounded-lg">
@@ -392,13 +425,16 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                             className="rounded-t-lg object-cover object-center h-36 md:rounded md:w-full md:h-96"
                                             src={`/imgs/produts/${item.ref}.png`}
                                             // src={`/imgs/produts/cerv.png`}
-                                            id="open-modal-img"
+                                            id="open-modalProdut-img"
                                             onClick={() => openModalProdut(item)}
                                         />
                                     </div>
                                     <div className="py-1">
-                                        <div className="w-full px-2 pb-2 pt-1"
-                                            onClick={() => openModalProdut(item)}>
+                                        <div 
+                                            className="w-full px-2 pb-2 pt-1"
+                                            onClick={() => openModalProdut(item)}
+                                            id="open-modalProdut-info"
+                                        >
                                             <h3 className="text-sm font-bold md:text-base text-gray-900">
                                                 {item.produt}
                                             </h3>
@@ -484,6 +520,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                             <div className="flex justify-center items-center py-2">
                                                 <button
                                                     className={`bg-gray-800 h-8 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
+                                                    id="btn-SubQuant-Produt"
                                                     onClick={() => subQuantUnd()}
                                                 >
                                                     <p className="text-white font-bold">-</p>
@@ -497,6 +534,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                                 </div>
                                                 <button 
                                                     className={`bg-gray-800 h-8 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
+                                                    id="btn-SomQuant-Produt"
                                                     onClick={() => somQuantUnd()}
                                                 >
                                                     <p className="text-white font-bold">+</p>
@@ -505,18 +543,21 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                             <div className="flex justify-center items-center py-2 mt-4">
                                                 <button 
                                                     className="w-full px-2 py-1 mx-2 rounded shadow-lg border border-gray-200"
+                                                    id="btn-SomOneCx-Produt"
                                                     onClick={() => somCxOne()}
                                                 >
                                                     <p className="text-gray-600 text-sm">1 caixa</p>
                                                 </button>
                                                 <button 
                                                     className="w-full px-2 py-1 mx-2 rounded shadow-lg border border-gray-200"
+                                                    id="btn-SomTwoCx-Produt"
                                                     onClick={() => somCxDuo()}
                                                 >
                                                     <p className="text-gray-600 text-sm">2 caixas</p>
                                                 </button>
                                                 <button 
                                                     className="w-full px-2 py-1 mx-2 rounded shadow-lg border border-gray-200"
+                                                    id="btn-ResetQuant-Produt"
                                                     onClick={() => oneQuant()}
                                                 >
                                                     <p className="text-gray-600 text-sm">1 unidade</p>
@@ -529,16 +570,11 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                 <div className="hidden md:block">
                                     <div className="flex justify-center md:w-3/5 mb-2 px-8">
                                         <button
-                                            className="w-full bg-green-600 px-2 py-2 rounded-md text-sm text-white mr-2"
+                                            className="w-full bg-green-600 px-2 py-3 rounded-md text-sm text-white mr-2"
+                                            id="btn-addCart-Pc"
                                             onClick={() => openModalAddCart()}
                                         >
                                             Adicionar carrinho
-                                        </button>
-                                        <button
-                                            className="w-full bg-green-500 px-2 py-1 rounded-md text-sm text-white"
-                                            onClick={() => AddCartAndSend()}
-                                        >
-                                            Finalizar pedido
                                         </button>
                                     </div>
                                 </div>
@@ -548,6 +584,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                     <div className="flex justify-center md:w-3/5 pt-4 pb-2 px-4 fixed inset-x-0 bottom-0">
                                         <button
                                             className="w-full bg-green-600 px-2 py-3 rounded-md text-sm text-white mr-2"
+                                            id="btn-addCart-Mobile"
                                             onClick={() => openModalAddCart()}
                                         >
                                             Adicionar carrinho
@@ -612,8 +649,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                             <div className="w-2/6 ml-1">
                                                 <img
                                                     className="w-full h-auto rounded-xl object-cover object-top"
-                                                    src={`/imgs/produts/cerv.png`}
-                                                    // src={`/imgs/produts/${item.ref}.png`}
+                                                    src={`/imgs/produts/${item.ref}.png`}
                                                 />
                                             </div>
                                             <div className="w-3/6 ml-1 px-1 py-2">
@@ -743,6 +779,50 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                 className="bg-white absolute top-3 right-3 w-6 h-6 rounded-full text-sm"
                                 type="button"
                                 onClick={closeModalContact}
+                            >
+                                x
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Modal Avaliacoes */}
+                {modalAvalit && (
+                    <div
+                        className="flex justify-center items-center inset-0 fixed bg-black bg-opacity-70"
+                    >
+                        <div className="w-full lg:w-1/3 rounded-xl shadow-md relative">
+                            <div className="px-4 py-12">
+                                <div className="flex flex-col items-center px-8 h-96 overflow-y-auto">
+                                    {listAvalit.map((item, key) =>
+                                        <div className="flex-col items-center w-full py-2 px-4 bg-white border rounded-md shadow-md mb-4" key={key}>
+                                            <div className="flex items-center">
+                                                <div className="flex items-center justify-center bg-gray-900 h-8 w-8 rounded-full">
+                                                    <img className="h-4"src={`/imgs/icons/like.png`}/>
+                                                </div>
+                                                <p className="pl-2">{item.name}</p>
+                                            </div>
+                                            <div className="flex items-center my-2">
+                                                {(item.star == "5") && 
+                                                    <>
+                                                        <img className="h-4 pr-1"src={`/imgs/icons/avalit-yellow.png`}/><img className="h-4 pr-1"src={`/imgs/icons/avalit-yellow.png`}/><img className="h-4 pr-1"src={`/imgs/icons/avalit-yellow.png`}/><img className="h-4 pr-1"src={`/imgs/icons/avalit-yellow.png`}/><img className="h-4 pr-1"src={`/imgs/icons/avalit-yellow.png`}/>
+                                                    </>
+                                                }
+                                                {(item.star == "4") && 
+                                                    <>
+                                                        <img className="h-4 pr-1"src={`/imgs/icons/avalit-yellow.png`}/>
+                                                    </>
+                                                }
+                                            </div>
+                                            <p className="">"{item.avalit}"</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <button
+                                className="bg-white absolute top-3 right-3 w-6 h-6 rounded-full text-sm"
+                                type="button"
+                                onClick={closeModalAvalit}
                             >
                                 x
                             </button>

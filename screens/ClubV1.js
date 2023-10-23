@@ -282,8 +282,6 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                 <div className="md:hidden">
                     <div 
                         className="flex justify-center items-center py-2 shadow-md" 
-                        // style={{ backgroundImage: url("/bg-01.gif") }}
-                        // style={{ backgroundImage: `url(${BgHeadImg})` }}
                         style={{ backgroundColor: colorHead }}
                         >
                         <div className="flex justify-center items-center w-2/5">
@@ -294,9 +292,6 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                         </div>
                         <div className="w-3/5 p-1">
                             <p className="text-yellow-500 text-base font-bold pb-1">Distribuidora de Bebidas</p>
-                            {/* <p className="text-white text-sm">QE 15 Conjunto M, Bloco A</p>
-                            <p className="text-white text-sm pb-1">Guara 2</p> */}
-                            {/* <p className="text-yellow-500 text-base font-bold pb-1">Faça seu pedido</p> */}
                             <div className="flex-col items-center">
                                 {( infoBD.operation === "on" ) ?
                                     <>
@@ -349,6 +344,23 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                     </div>
                 </div>
 
+                {/* Menu Categorias Mobile */}
+                <div 
+                    className="flex md:justify-center px-4 py-4 overflow-x-auto md:hidden"
+                    style={{ backgroundColor: colorHead }}
+                    >
+                    <div className="flex justify-center items-center flex-nowrap">
+                        {listCategory.map((item, key) =>
+                            <p key={key}
+                                className={`mx-2 text-sm text-white ${filterProdut === item.value && "text-base border border-white rounded-lg px-2 py-1"}`} onClick={() => setFilterProdut(item.value)}
+                                id="btn-menu"
+                            >
+                                {item.name}
+                            </p>
+                        )}
+                    </div>
+                </div>
+
                 {/* Head Desktop */}
                 <div className="hidden md:block">
                     <div className="py-6 px-12 shadow-md" style={{ backgroundColor: colorHead }}>
@@ -357,6 +369,74 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                 className="object-cover w-32 h-auto"
                                 src={`/imgs/${logo}.png`}
                             />
+                            <div>
+                                <div className="w-ful p-1">
+                                    <div className="flex items-center">
+                                        {(infoBD.operation === "on") ?
+                                            <>
+                                                <div className="flex items-center mx-3 my-1">
+                                                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                                    <p className="text-white text-sm pl-3">Loja aberta</p>
+                                                </div>
+                                                <div className="flex items-center mx-3 my-1 ">
+                                                    <img
+                                                        className="h-4"
+                                                        src={`/imgs/icons/icon-time.png`}
+                                                    />
+                                                    <p className="pl-2 text-white text-sm">Entrega em até 30min</p>
+                                                </div>
+                                                <div
+                                                    className="flex items-center mx-3 my-1"
+                                                    onClick={() => openModalAvalit()}
+                                                >
+                                                    <img
+                                                        className="h-4"
+                                                        src={`/imgs/icons/avalit.png`}
+                                                    />
+                                                    <p className="text-base text-white pl-2">
+                                                        {listAvalit.length} avaliações
+                                                    </p>
+                                                </div>
+                                            </>
+                                            :
+                                            <>
+                                                <div className="flex items-center mb-1">
+                                                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                                                    <p className="text-white text-sm pl-2">Loja fechada</p>
+                                                </div>
+                                                <div className="flex">
+                                                    <p className="text-white text-sm">Entrega amanhã a partir das 10:00hs</p>
+                                                </div>
+                                                <div className="flex items-center">
+                                                    <img
+                                                        className="h-4"
+                                                        src={`/imgs/icons/avalit.png`}
+                                                    />
+                                                    <p className="text-base text-white pl-2">
+                                                        {dataAvalit.length} avaliações
+                                                    </p>
+                                                </div>
+                                            </>
+                                        }
+                                    </div>
+                                </div>
+                                {/* Menu Categorias Desktop */}
+                                <div
+                                    className="flex md:justify-center px-4 py-4 overflow-x-auto"
+                                    style={{ backgroundColor: colorHead }}
+                                >
+                                    <div className="flex justify-center items-center flex-nowrap">
+                                        {listCategory.map((item, key) =>
+                                            <p key={key}
+                                                className={`mx-2 text-sm text-white ${filterProdut === item.value && "text-base border border-white rounded-lg px-2 py-1"}`} onClick={() => setFilterProdut(item.value)}
+                                                id="btn-menu"
+                                            >
+                                                {item.name}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
 
                             <div className="flex justify-center items-center">
                                 <div
@@ -385,23 +465,6 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                {/* Menu Categorias  */}
-                <div 
-                    className="flex md:justify-center px-4 py-4 overflow-x-auto"
-                    style={{ backgroundColor: colorHead }}
-                    >
-                    <div className="flex justify-center items-center flex-nowrap">
-                        {listCategory.map((item, key) =>
-                            <p key={key}
-                                className={`mx-2 text-sm text-white ${filterProdut === item.value && "text-base border border-white rounded-lg px-2 py-1"}`} onClick={() => setFilterProdut(item.value)}
-                                id="btn-menu"
-                            >
-                                {item.name}
-                            </p>
-                        )}
                     </div>
                 </div>
 
@@ -478,9 +541,12 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                 {/* Modal Produto */}
                 {modalProdut && (
                     <div
-                        className="flex justify-center items-center inset-0 fixed bg-white"
+                        className="flex justify-center items-center inset-0 fixed bg-black bg-opacity-50"
                     >
-                        <div className="w-screen h-screen md:flex md:w-full relative overflow-y-auto md:overflow-hidden">
+                        <div className="
+                            w-screen h-screen relative overflow-y-auto bg-white
+                            md:flex md:w-full md:overflow-hidden md:w-[60vw] md:h-[80vh] md:rounded-lg
+                            ">
                             {/* IMG Desktop */}
                             <div className="p-0 m-0 hidden md:block h-auto w-2/5">
                                 <img
@@ -516,27 +582,27 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                             className={`md:w-2/5 mb-2 ${(alertInputSizeTextOn) ? "mb-4" : "" }`}
                                         >
                                         </div>
-                                            <div className="flex justify-center items-center py-2">
+                                            <div className="flex justify-center items-center py-2 md:w-2/3">
                                                 <button
-                                                    className={`bg-gray-800 h-8 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
+                                                    className={`bg-gray-800 h-6 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
                                                     id="btn-SubQuant-Produt"
                                                     onClick={() => subQuantUnd()}
                                                 >
-                                                    <p className="text-white font-bold">-</p>
+                                                    <p className="text-white font-bold text-sm">-</p>
                                                 </button>
                                                 <div
                                                     className={`w-2/4 px-2 h-8 w-full rounded-md text-center shadow-lg border border-gray-100 ${alertInputSize}`}
                                                 >
-                                                    <p className="">
+                                                    <p className="text-base md:text-sm md:m-1">
                                                         {quantUnd} unidades
                                                     </p>
                                                 </div>
                                                 <button 
-                                                    className={`bg-gray-800 h-8 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
+                                                    className={`bg-gray-800 h-6 w-8 mx-2 rounded-full shadow-lg ${alertInputSize}`}
                                                     id="btn-SomQuant-Produt"
                                                     onClick={() => somQuantUnd()}
                                                 >
-                                                    <p className="text-white font-bold">+</p>
+                                                    <p className="text-white font-bold text-sm">+</p>
                                                 </button>
                                             </div>
                                             <div className="flex justify-center items-center py-2 mt-4">
@@ -569,7 +635,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                                 <div className="hidden md:block">
                                     <div className="flex justify-center md:w-3/5 mb-2 px-8">
                                         <button
-                                            className="w-full bg-green-600 px-2 py-3 rounded-md text-sm text-white mr-2"
+                                            className="w-full bg-green-600 px-1 py-2 rounded-md text-sm text-white mr-2"
                                             id="btn-addCart-Pc"
                                             onClick={() => openModalAddCart()}
                                         >
@@ -945,7 +1011,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
 
                 {/* fixed desktop */}
                 <div 
-                    className={`hidden md:block right-2 bottom-2 ${fixedOn} px-3 py-4 rounded-md`}
+                    className={`hidden md:block right-2 bottom-2 ${fixedOn} px-2 py-1 rounded-md`}
                     style={{ backgroundColor: colorBodyBar }}
                 >
                     <div className="flex flex-col justify-center items-center">
@@ -954,7 +1020,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             onClick={() => openModalCart()}
                         >
                             <img
-                                className="w-6 h-6"
+                                className="w-4 h-4"
                                 src={`/imgs/icons/icon-cart-white.png`}
                             />
                             {
@@ -969,7 +1035,7 @@ ${(item.quantUnd !== 0) ? `${item.quantUnd} unds` : ""}
                             onClick={() => openModalContact()}
                         >
                             <img
-                                className="w-5 h-5"
+                                className="w-4 h-4"
                                 src={`/imgs/icons/icon-contact-white.png`}
                             />
                         </div>
